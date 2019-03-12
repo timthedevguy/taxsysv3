@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+    <div class="login-box">
+        <div id="apptitle">Tax<strong>SYS</strong></div>
+        <div class="login-box-body" style="text-align:center;">
+            <p class="login-box-msg">Sign in to start your session</p>
+            <a href="{% url "social:begin" "ssodotte" %}">
+                <img style="margin:0px auto;" src="{% static 'img/sso.png' %}">
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
