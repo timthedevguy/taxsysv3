@@ -29,7 +29,7 @@ class SSODotteOAuth2(BaseOAuth2):
             'username'  : fullname,
             'fullname'  : fullname,
             'first_name': first_name,
-            'last_name' : last_name
+            'last_name' : last_name,
         }
 
     def user_data(self, access_token, *args, **kwargs):
