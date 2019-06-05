@@ -10,6 +10,7 @@ django = "*"
 mysqlclient = "*"
 social-auth-core = "*"
 social-auth-app-django = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.7"

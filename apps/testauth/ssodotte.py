@@ -36,8 +36,3 @@ class SSODotteOAuth2(BaseOAuth2):
         """Get Character data from EVE server"""
         return {'CharacterName': 'Fecal Matters'}
 
-    """def get_redirect_uri(self, state=None):
-        
-        uri = super(SSODotteOAuth2, self).get_redirect_uri(self, state)
-
-        return 'http://10.0.1.93:8000/accounts/complete/ssodotte/'"""
