@@ -66,7 +66,8 @@ MIDDLEWARE = [
 
 SOCIAL_AUTH_PIPELINE = [
     'apps.testauth.pipeline.ssodotte_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
+    #'social_core.pipeline.social_auth.social_uid',
+    'apps.testauth.pipeline.ssodotte_auth.social_uid',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.user.create_user',

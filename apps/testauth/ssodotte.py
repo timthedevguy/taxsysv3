@@ -24,6 +24,7 @@ class SSODotteOAuth2(BaseOAuth2):
         fullname, first_name, last_name = self.get_user_names(
                 user_data['CharacterName']
         )
+        # Get Sub here and provide in user details section
         return {
             'email'     : '',
             'username'  : fullname,
@@ -36,3 +37,7 @@ class SSODotteOAuth2(BaseOAuth2):
         """Get Character data from EVE server"""
         return {'CharacterName': 'Fecal Matters'}
 
+    def get_user_id(self, details, response):
+        """Return a unique ID for the current user, by default from server
+        response."""
+        return response.get(self.ID_KEY)
