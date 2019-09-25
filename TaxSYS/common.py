@@ -5,7 +5,7 @@ import sys
 # ##### PATH CONFIGURATION ################################
 
 # fetch Django's project directory
-DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+DJANGO_ROOT = dirname(abspath(__file__))
 
 # fetch the project_root
 PROJECT_ROOT = dirname(DJANGO_ROOT)

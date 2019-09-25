@@ -4,10 +4,6 @@ from os.path import join
 # project imports
 from .common import *
 
-# uncomment the following line to include i18n
-# from .i18n import *
-
-
 # ##### DEBUG CONFIGURATION ###############################
 DEBUG = True
 
@@ -31,9 +27,9 @@ DATABASES = {
     'default': {
         'ENGINE'  : 'django.db.backends.mysql',
         'NAME'    : 'taxsysv3',
-        'USER'    : 'db_user',
-        'PASSWORD': 'TI6510**',
-        'HOST'    : '10.0.1.14',
+        'USER'    : 'root',
+        'PASSWORD': '44891620a',
+        'HOST'    : '127.0.0.1',
         'PORT'    : '3306'
     }
 }

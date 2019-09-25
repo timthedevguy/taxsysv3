@@ -1,5 +1,12 @@
 # for now fetch the development settings only
 from .development import *
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://c973798b071c457c937ab6e646ff1cfc@sentry.io/1761193",
+    integrations=[DjangoIntegration()]
+)
 
 # turn off all debugging
 DEBUG = False
