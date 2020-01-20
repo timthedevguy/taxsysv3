@@ -29,7 +29,7 @@ DATABASES = {
         'NAME'    : 'taxsysv3',
         'USER'    : 'root',
         'PASSWORD': '44891620a',
-        'HOST'    : '127.0.0.1',
+        'HOST'    : '10.0.1.14',
         'PORT'    : '3306'
     }
 }

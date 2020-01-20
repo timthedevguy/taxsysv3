@@ -12,6 +12,8 @@ social-auth-core = "*"
 social-auth-app-django = "*"
 pyjwt = "*"
 sentry-sdk = "*"
+cryptography = "*"
+jwcrypto = "*"
 
 [requires]
 python_version = "3.7"
