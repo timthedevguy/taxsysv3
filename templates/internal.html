@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body-class %}hold-transition skin-blue layout-top-nav{% endblock %}
+
+{% block body %}
+
+    <div class="wrapper">
+
+        <header class="main-header">
+            {% include '_topnav.html' %}
+        </header>
+
+        <!-- Full Width Column -->
+        <div class="content-wrapper">
+            <div class="container">
+
+                {% block content %}{% endblock %}
+
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="container">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> VERSION
+                </div>
+                <strong>Copyright &copy; 2017-2020 <a href="http://binarymethod.com" data-toggle="tooltip"
+                                                      title="ISK Donations accepted, but not required">Fecal Matters</a>.</strong>
+            </div>
+            <!-- /.container -->
+        </footer>
+    </div>
+
+{% endblock %}

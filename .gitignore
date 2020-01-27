@@ -200,3 +200,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea/
+/taxsysv3/settings.py

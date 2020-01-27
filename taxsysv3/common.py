@@ -9,10 +9,14 @@ sys.path.append(os.path.normpath(os.path.join(BASE_DIR, 'apps')))
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'mozilla_django_oidc',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.testauth_module',
+    'apps.landlord_module',
+    'apps.tenant_module'
 ]
 
 MIDDLEWARE = [
@@ -23,6 +27,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mozilla_django_oidc.middleware.SessionRefresh',
 ]
 
 ROOT_URLCONF = 'taxsysv3.urls'
@@ -30,8 +35,7 @@ ROOT_URLCONF = 'taxsysv3.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,4 +81,20 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'node_modules'),
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AUTH_USER_MODEL = 'testauth_module.TestUser'
+# https://sso.pleaseignore.com/auth/realms/auth-ng/.well-known/openid-configuration
+OIDC_OP_JWKS_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/certs'
+OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/auth'
+OIDC_OP_TOKEN_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/token'
+OIDC_OP_USER_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/userinfo'
+OIDC_RP_SIGN_ALGO = 'RS256'
+# LOGIN_REDIRECT_URL = "<URL path to redirect to after login>"
+# LOGOUT_REDIRECT_URL = "<URL path to redirect to after logout>"
+
 

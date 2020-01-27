@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body-class %}hold-transition login-page{% endblock %}
+
+{% block body %}
+
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/"><b>Tax</b>SYS</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body" style="text-align: center;">
+            <p class="login-box-msg">Sign in to start your session</p>
+            <a href="{% url 'oidc_authentication_init' %}"><img src="{% static '/img/sso.png' %}"></a>
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+
+{% endblock %}
