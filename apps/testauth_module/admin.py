@@ -3,6 +3,6 @@ from .models import TestUser
 
 
 class TestUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'auth_id', 'subject', 'is_staff', 'is_active')
+    list_display = ('display_name', 'username', 'auth_id', 'subject', 'is_staff', 'is_active')
 
 admin.site.register(TestUser, TestUserAdmin)

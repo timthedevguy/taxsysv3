@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body-class %}hold-transition login-page{% endblock %}
+
+{% block body %}
+
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/"><b>Tax</b>SYS</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="box box-danger box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="icon fa fa-ban"></i> Un-synchronized</h3>
+            </div>
+            <div class="box-body">
+                Your TEST Auth account is in an un-synchronized state. Please take the following steps to resolve:
+                <ul>
+                    <li>Log in to <a href="https://auth.pleaseignore.com/">TEST Auth</a></li>
+                    <li>Click 'Update Access' button in 'Eve API Keys' section of Profile. (Page with your picture on
+                        it)
+                    </li>
+                    <li>Click the 'Logout' button! Then log back in.</li>
+                </ul>
+            </div>
+        </div>
+        <a href="{% url 'logout' %}" class="btn btn-block btn-primary">Logout</a>
+        <!-- /.login-box-body -->
+    </div>
+
+
+
+{% endblock %}

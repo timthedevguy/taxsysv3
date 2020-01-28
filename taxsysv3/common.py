@@ -2,7 +2,6 @@ import os
 
 import sys
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.normpath(os.path.join(BASE_DIR, 'apps')))
 
@@ -83,7 +82,8 @@ STATICFILES_DIRS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    # 'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'apps.testauth_module.utils.TestOIDC',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -94,7 +94,22 @@ OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-
 OIDC_OP_TOKEN_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/token'
 OIDC_OP_USER_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/userinfo'
 OIDC_RP_SIGN_ALGO = 'RS256'
-# LOGIN_REDIRECT_URL = "<URL path to redirect to after login>"
-# LOGOUT_REDIRECT_URL = "<URL path to redirect to after logout>"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+OIDC_STORE_ACCESS_TOKEN = True
 
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'mozilla_django_oidc': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },
+    },
+}
