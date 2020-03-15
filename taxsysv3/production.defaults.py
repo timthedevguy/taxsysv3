@@ -18,3 +18,9 @@ DATABASES = {
         'PORT'    : os.environ.get("DB_PORT")
     }
 }
+
+OIDC_RP_CLIENT_ID = os.environ.get("CLIENT_ID")
+OIDC_RP_CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
+SOCIAL_AUTH_SSODOTTE_SCOPE = [
+    os.environ.get("CLIENT_SCOPE"),
+]
