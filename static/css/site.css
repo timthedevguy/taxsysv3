@@ -1,0 +1,23 @@
+/* Login/Register */
+.login-box, .register-box {
+    max-width:500px;
+    width:100%;
+}
+
+.login-box.small {
+    max-width:360px;
+    width:100%;
+}
+/* Helpers */
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.no-margin {
+    margin:0px;
+}
+

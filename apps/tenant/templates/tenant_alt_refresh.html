@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body-class %}hold-transition login-page{% endblock %}
+
+{% block body %}
+
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/"><b>Tax</b>SYS</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="box box-info box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="icon fa fa-info-circle"></i> Alt Refresh Needed</h3>
+            </div>
+            <div class="box-body">
+                <p><strong>This is an automatic process that happens every 14 days!!!</strong></p>
+                <p>TaxSYS needs to gather some information about your available Characters. Nobody
+                    will see these Characters unless they are in a Whitelisted corp within TaxSYS. Once
+                    complete you can continue to the Ledger.</p>
+                <p>TaxSYS shows your Character Name in various places, stats and leaderboards. You can
+                    change which Character Name is displayed by clicking on 'Alts' in the Menu on the
+                    next
+                    screen.</p>
+                <div id="box-content">
+                    <p class="no-margin center">Found <strong>12 characters</strong><br/>
+                    Loading Corporation Information</p>
+                    <div class="progress active">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span class="sr-only">Loading character information</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="btn btn-success pull-right">Go to Ledger</a>
+        <!-- /.login-box-body -->
+        {{ characters }}
+    {% csrf_token %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(document).ready(function() {
+            let character_ids = JSON.parse('{{ characters }}');
+            let data = {};
+            data['characters'] = character_ids;
+            console.log(data);
+            $.post('{% url 'ajax-characters-info' %}', data, function(response) {
+               console.log(response);
+            });
+        });
+    </script>
+{% endblock %}

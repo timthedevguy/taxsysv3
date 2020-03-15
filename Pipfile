@@ -8,8 +8,10 @@ verify_ssl = true
 [packages]
 django = "*"
 django-decorator-include = "*"
-mysqlclient = "*"
 mozilla-django-oidc = "*"
+requests = "*"
+sentry-sdk = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

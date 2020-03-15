@@ -1,6 +1,16 @@
 import os
-
 import sys
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://c973798b071c457c937ab6e646ff1cfc@sentry.io/1761193",
+    integrations=[DjangoIntegration()],
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.normpath(os.path.join(BASE_DIR, 'apps')))
@@ -13,9 +23,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.testauth_module',
-    'apps.landlord_module',
-    'apps.tenant_module'
+    'apps.testesi',
+    'apps.testauth',
+    'apps.landlord',
+    'apps.tenant',
 ]
 
 MIDDLEWARE = [
@@ -26,7 +37,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'mozilla_django_oidc.middleware.SessionRefresh',
 ]
 
 ROOT_URLCONF = 'taxsysv3.urls'
@@ -83,20 +93,22 @@ STATICFILES_DIRS = [
 
 AUTHENTICATION_BACKENDS = [
     # 'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
-    'apps.testauth_module.utils.TestOIDC',
+    'apps.testauth.utils.TestOIDC',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-AUTH_USER_MODEL = 'testauth_module.TestUser'
+AUTH_USER_MODEL = 'testauth.TestUser'
 # https://sso.pleaseignore.com/auth/realms/auth-ng/.well-known/openid-configuration
 OIDC_OP_JWKS_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/certs'
 OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/auth'
 OIDC_OP_TOKEN_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/token'
 OIDC_OP_USER_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/userinfo'
+OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 300
 OIDC_RP_SIGN_ALGO = 'RS256'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 OIDC_STORE_ACCESS_TOKEN = True
+OIDC_STORE_ID_TOKEN = True
 
 LOGGING = {
     'version': 1,
@@ -113,3 +125,15 @@ LOGGING = {
         },
     },
 }
+
+FORCE_ALT_REFRESH_INTERVAL = 14
+
+# ESI/TEST ESI Base URLs
+TESTESI_BASE_URL = 'https://auth.pleaseignore.com/'
+ESI_BASE_URL = 'https://esi.evetech.net/'
+# ESI/TEST ESI Endpoints in use
+TESTESI_GET_CHARACTERS = 'esi/_/characters/{subject}'
+TESTESI_GET_CHARACTER_INFO = 'esi/v4/characters/{character_id}'
+TESTESI_GET_CORPORATION_JOURNAL = 'esi/v4/corporations/{corporation_id}/wallets/{wallet_number}/journal/'
+ESI_UNIVERSE_NAME_SEARCH = 'v2/universe/names/'
+ESI_GET_CORPORATION_HISTORY = 'v1/characters/{character_id}/corporationhistory'

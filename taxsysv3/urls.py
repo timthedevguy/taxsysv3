@@ -18,9 +18,13 @@ from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from decorator_include import decorator_include
 
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', decorator_include(login_required, 'apps.tenant_module.urls')),
-    path('accounts/', include('apps.testauth_module.urls')),
+    path('', decorator_include(login_required, 'apps.tenant.urls')),
+    path('accounts/', include('apps.testauth.urls')),
     path('oidc/', include('mozilla_django_oidc.urls')),
+    path('sentry-debug/', trigger_error),
 ]

@@ -10,12 +10,12 @@ ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {
-        'ENGINE'  : 'django.db.backends.mysql',
-        'NAME'    : 'taxsysv3',
-        'USER'    : 'db_user',
+        'ENGINE'  : 'django.db.backends.postgresql_psycopg2',
+        'NAME'    : 'taxsys',
+        'USER'    : 'taxsys',
         'PASSWORD': 'TI6510**',
-        'HOST'    : '10.0.1.14',
-        'PORT'    : '3306'
+        'HOST'    : 'psql01.binarymethod.com',
+        'PORT'    : ''
     }
 }
 
