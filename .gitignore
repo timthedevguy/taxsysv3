@@ -201,3 +201,7 @@ dmypy.json
 .pyre/
 .idea/
 /taxsysv3/settings.py
+
+node_modules/
+
+taxsysv3/development.py
