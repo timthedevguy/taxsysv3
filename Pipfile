@@ -12,6 +12,7 @@ mozilla-django-oidc = "*"
 requests = "*"
 sentry-sdk = "*"
 psycopg2 = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
