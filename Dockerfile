@@ -17,6 +17,6 @@ ADD . /code/
 
 COPY --from=builder /code/node_modules /code/node_modules
 
-RUN pip install --upgrade pip && pip install pipenv && pipenv install --deploy --system && chmod +x /code/docker-entrypoint.sh
+RUN apt-get update -y && apt-get install -y libpq-dev postgresql-client && pip install --upgrade pip && pip install pipenv && pipenv install --deploy --system && chmod +x /code/docker-entrypoint.sh
 
 ENTRYPOINT [ "/code/docker-entrypoint.sh" ]

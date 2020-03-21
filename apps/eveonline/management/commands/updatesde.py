@@ -2,9 +2,8 @@ import requests
 import bz2
 import subprocess
 import os
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
-from django.db import connection
 
 
 class Command(BaseCommand):
@@ -14,40 +13,48 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
+        self.stdout.write(self.style.NOTICE('Downloading Postgres dump of Eve SDE...'))
+        # Download the dump
+        r = requests.get('https://www.fuzzwork.co.uk/dump/postgres-latest.dmp.bz2')
+        open('postgres-latest.dmp.bz2', 'wb').write(r.content)
+        # Extract the dump
+        self.stdout.write(self.style.NOTICE('Extracting Postgres dump of Eve SDE...'))
+        zipfile = bz2.BZ2File('postgres-latest.dmp.bz2')
+        data = zipfile.read()
+        postgres_dmp = 'postgres-latest.dmp'
+        open(postgres_dmp, 'wb').write(data)
+        zipfile.close()
+
         for table in settings.EVEONLINE_SDE_TABLES:
-            self.stdout.write(self.style.NOTICE('Updating {table}...'.format(table=table)))
-            # Download the file
-            r = requests.get('https://www.fuzzwork.co.uk/dump/latest/{table}.csv.bz2'.format(table=table))
-            open('{table}.csv.bz2'.format(table=table), 'wb').write(r.content)
-
-            # Extract the SQL Dump
-            zipfile = bz2.BZ2File('{table}.csv.bz2'.format(table=table))
-            data = zipfile.read()
-            newfilepath = '{table}.csv'.format(table=table)
-            open(newfilepath, 'wb').write(data)
-
-            # Create passfile
-            with open('passfile', 'w') as f:
-                f.write('{hostname}:{port}:{database}:{username}:{password}'.format(
-                    hostname=settings.DATABASES['default']['HOST'],
-                    port=5432,
-                    database=settings.DATABASES['default']['NAME'],
-                    username=settings.DATABASES['default']['USER'],
-                    password=settings.DATABASES['default']['PASSWORD']
-                ))
-
-            # Import the SQL Dump
-            p = subprocess.run('psql --host=10.0.1.13 --username=postgres --dbname=taxsys --command="\\copy invTypes FROM \'invTypes.csv\' delimiter \',\' csv header"'.format(
+            # Create Commands
+            drop_command = 'psql -h {host} -U {user} -p 5432 -w -d {database} -q -c "drop table \\"{table}\\""'.format(
+                host=settings.DATABASES['default']['HOST'],
+                user=settings.DATABASES['default']['USER'],
+                database=settings.DATABASES['default']['NAME'],
                 table=table
-            ), env={'PGPASSFILE': 'passfile'})
+            )
+            import_command = 'pg_restore -h {host} -U {user} -p 5432 -w -d {database} -t {table} -O postgres-latest.dmp'.format(
+                host=settings.DATABASES['default']['HOST'],
+                user=settings.DATABASES['default']['USER'],
+                database=settings.DATABASES['default']['NAME'],
+                table=table
+            )
 
-            # with connection.cursor() as cursor:
-            #     cursor.execute("copy invTypes FROM \'invTypes.csv\' delimiter \',\' csv header")
+            if os.name == 'nt':
+                self.stdout.write(self.style.NOTICE('Droping {table}...'.format(table=table)))
+                p = subprocess.run(drop_command, shell=False)
+                self.stdout.write(self.style.NOTICE('Importing {table}...'.format(table=table)))
+                subprocess.run(import_command, shell=False)
+            else:
+                self.stdout.write(self.style.NOTICE('Droping {table}...'.format(table=table)))
+                subprocess.run(drop_command, shell=True, env={
+                    'PGPASSWORD': settings.DATABASES['default']['PASSWORD']
+                })
+                self.stdout.write(self.style.NOTICE('Importing {table}...'.format(table=table)))
+                subprocess.run(import_command, shell=True, env={
+                    'PGPASSWORD': settings.DATABASES['default']['PASSWORD']
+                })
 
-            #shell=True, , stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-            print(p)
-
-            # Delete the files
-            # os.remove('{table}.sql.bz2'.format(table=table))
-            # os.remove('{table}.sql'.format(table=table))
+        # Delete the files
+        os.remove('postgres-latest.dmp.bz2'.format(table=table))
+        os.remove('postgres-latest.dmp'.format(table=table))
