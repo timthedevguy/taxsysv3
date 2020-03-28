@@ -143,3 +143,6 @@ EVEONLINE_SDE_TABLES = [
     'invTypeMaterials',
     'dgmTypeAttributes'
 ]
+
+MARKET_REGION = '10000002'
+MARKET_SYSTEM = 60003760

@@ -14,9 +14,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE('Downloading Postgres dump of Eve SDE...'))
+
         # Download the dump
         r = requests.get('https://www.fuzzwork.co.uk/dump/postgres-latest.dmp.bz2')
         open('postgres-latest.dmp.bz2', 'wb').write(r.content)
+
         # Extract the dump
         self.stdout.write(self.style.NOTICE('Extracting Postgres dump of Eve SDE...'))
         zipfile = bz2.BZ2File('postgres-latest.dmp.bz2')
