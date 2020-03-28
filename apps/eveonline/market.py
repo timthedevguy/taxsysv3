@@ -42,8 +42,6 @@ def five_percent(raw_data):
 
 def pandas_stats(raw_data):
     sell = pandas.DataFrame(raw_data)
-    print(sell)
-    print(sell.groupby('type_id')['price'].transform('min'))
     sell['min'] = sell.groupby('type_id')['price'].transform('min')
     sell['volume'] = sell.apply(lambda x: 0 if x['price'] > x['min'] * 100 else x['volume_remain'], axis=1)
     sell['cumsum'] = sell.groupby('type_id')['volume'].apply(lambda x: x.cumsum())
@@ -52,22 +50,18 @@ def pandas_stats(raw_data):
     sell.fillna(0, inplace=True)
     sell['applies'] = sell.apply(
         lambda x: x['volume'] if x['cumsum'] <= x['fivepercent'] else x['fivepercent'] - x['lastsum'], axis=1)
-    # result = []
-    # result['min'] = sell['price'].transform('min')
-    # result['volume'] = sell.apply(lambda x: 0 if x['price'] > x['min'] * 100 else x['volume'], axis=1)
-    # return result
-    print(sell)
+
     sellagg = pandas.DataFrame()
-    sellagg['weightedaverage'] = sell.groupby('type_id').apply(lambda x: numpy.average(x.price, weights=x.volume))
-    sellagg['maxval'] = sell.groupby('type_id')['price'].max()
-    sellagg['minval'] = sell.groupby('type_id')['price'].min()
+    sellagg['weightedAverage'] = sell.groupby('type_id').apply(lambda x: numpy.average(x.price, weights=x.volume))
+    sellagg['max'] = sell.groupby('type_id')['price'].max()
+    sellagg['min'] = sell.groupby('type_id')['price'].min()
     sellagg['stddev'] = sell.groupby('type_id')['price'].std()
     sellagg['median'] = sell.groupby('type_id')['price'].median()
     sellagg.fillna(0.01, inplace=True)
     sellagg['volume'] = sell.groupby('type_id')['volume'].sum()
-    sellagg['numorders'] = sell.groupby('type_id')['price'].count()
-    sellagg['fivepercent'] = sell.groupby('type_id').apply(lambda x: numpy.average(x.price, weights=x.applies))
-    print(sellagg)
+    sellagg['orderCount'] = sell.groupby('type_id')['price'].count()
+    sellagg['percentile'] = sell.groupby('type_id').apply(lambda x: numpy.average(x.price, weights=x.applies))
+    return sellagg.to_dict('records')[0]
 
 
 def every_three_minutes():
