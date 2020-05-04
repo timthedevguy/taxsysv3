@@ -20,12 +20,12 @@ class TestClient:
                 time.sleep(10)
                 retries += 1
         else:
-            return None
+            raise Exception('No response')
 
         if response.status_code == 200:
             return json.loads(response.text)
         else:
-            return None
+            raise Exception('NOT AUTHORIZED')
 
         return None
 

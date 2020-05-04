@@ -16,11 +16,11 @@ class IndexView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         # Check if Auth account is 'Synchronized'
-        if not request.user.is_sync:
-            return redirect('sync-error')
-
-        if request.user.is_stale:
-            return redirect('alt-refresh-error')
+        # if not request.user.is_sync:
+        #     return redirect('sync-error')
+        #
+        # if request.user.is_stale:
+        #     return redirect('sync-error')
 
         return super().get(request, test='nope', *args, **kwargs)
 

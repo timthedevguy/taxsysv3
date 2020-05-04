@@ -1,21 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block body-class %}hold-transition skin-blue layout-top-nav{% endblock %}
+{% block body-class %}hold-transition layout-top-nav" data-panel-auto-height="false{% endblock %}
 
 {% block body %}
 
     <div class="wrapper">
 
         <header class="main-header">
+            <div class="brand-bar">
+                <div class="container">
+                    <div class="row">
+                        <div class="d-flex justify-content-between" id="brand-bar-content">
+                            <a href="/" class="navbar-brand"><i class="fas fa-university"></i> <b>Tax</b>SYS</a>
+                            <a class="pull-right" href="{% url 'logout' %}">Logout {{ user.display_name }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% include '_topnav.html' %}
         </header>
 
         <!-- Full Width Column -->
         <div class="content-wrapper">
             <div class="container">
-
-                {% block content %}{% endblock %}
+                test
+                {% block content %}test{% endblock %}
 
             </div>
             <!-- /.container -->
@@ -23,14 +33,41 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <div class="container">
+                <div class="row">
+                    <div class="d-flex justify-content-between full-width">
+                        <strong>Copyright &copy; 2017-2020 <a href="http://binarymethod.com" data-toggle="tooltip"
+                                                              title="ISK Donations accepted, but not required">Fecal
+                            Matters</a>.</strong>
+                        <div class="float-right d-none d-sm-inline">
+                            Version 3
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!--<footer class="main-footer">
+            <div class="container">
                 <div class="pull-right hidden-xs">
                     <b>Version</b> VERSION
                 </div>
                 <strong>Copyright &copy; 2017-2020 <a href="http://binarymethod.com" data-toggle="tooltip"
                                                       title="ISK Donations accepted, but not required">Fecal Matters</a>.</strong>
             </div>
-            <!-- /.container -->
-        </footer>
+
+        </footer>-->
     </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+
+        $(document).ready(() => {
+            console.log("here");
+
+        })
+
+    </script>
 
 {% endblock %}

@@ -56,3 +56,4 @@ class MarketData(models.Model):
     orderCount = models.BigIntegerField(null=False)
     percentile = models.DecimalField(max_digits=19, decimal_places=2, null=False)
     date = models.DateField(null=False)
+    typeID = models.IntegerField(null=False)

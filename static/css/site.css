@@ -1,13 +1,46 @@
 /* Login/Register */
 .login-box, .register-box {
-    max-width:500px;
-    width:100%;
+    max-width: 500px;
+    width: 100%;
 }
 
 .login-box.small {
-    max-width:360px;
-    width:100%;
+    max-width: 360px;
+    width: 100%;
 }
+
+/*Internal*/
+/*Header*/
+.brand-bar {
+    background: #007BFF;
+    height: 50px;
+    color: white;
+}
+
+.brand-bar .navbar-brand {
+    color: white;
+    line-height: 50px;
+    padding: 0;
+}
+
+.brand-bar a {
+    color: white;
+    line-height: 50px;
+}
+
+#brand-bar-content {
+    width: 100%;
+}
+
+.content-wrapper {
+    margin-top: -58px;
+    padding-top: 58px;
+}
+
+a.nav-link i {
+    margin-top: 4px;
+}
+
 /* Helpers */
 .center {
     text-align: center;
@@ -18,6 +51,9 @@
 }
 
 .no-margin {
-    margin:0px;
+    margin: 0px;
 }
 
+.full-width {
+    width: 100%;
+}
