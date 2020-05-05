@@ -13,10 +13,13 @@ services:
       - db
     environment:
       - VIRTUAL_HOST=taxsysv3.binarymethod.com
+      - POSTGRES_PASSWORD=postgres
   db:
     image: postgres:12-alpine
     volumes:
       - taxsys_postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=postgres
 volumes:
   taxsys_postgres_data:
   taxsys_static_volume:
