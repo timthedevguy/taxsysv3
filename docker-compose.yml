@@ -6,7 +6,7 @@ services:
     command: gunicorn taxsysv3.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - /home/rancher/data/taxsysv3/settings.py:/code/taxsysv3/settings.py
-      - static_volume:/code/staticfiles
+      - taxsys_static_volume:/code/staticfiles
     ports:
       - "8000:8000"
     depends_on:
@@ -16,7 +16,7 @@ services:
   db:
     image: postgres:12-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - taxsys_postgres_data:/var/lib/postgresql/data/
 volumes:
   taxsys_postgres_data:
   taxsys_static_volume:
