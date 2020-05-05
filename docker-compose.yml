@@ -5,7 +5,7 @@ services:
     build: .
     command: gunicorn taxsysv3.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - c:/Docker/taxsysv3/settings.py:/code/taxsysv3/settings.py
+      - /home/rancher/data/taxsysv3/settings.py:/code/taxsysv3/settings.py
       - static_volume:/code/staticfiles
     ports:
       - "8000:8000"
@@ -18,5 +18,5 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 volumes:
-  postgres_data:
-  static_volume:
+  taxsys_postgres_data:
+  taxsys_static_volume:
