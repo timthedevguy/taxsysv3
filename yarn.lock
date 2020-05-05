@@ -195,7 +195,6 @@ admin-lte@^3.0.4:
     raphael "^2.3.0"
     select2 "^4.0.13"
     sparklines "^1.2.0"
-    summernote "^0.8.16"
     sweetalert2 "^9.10.8"
     tempusdominus-bootstrap-4 "^5.1.2"
     toastr "^2.1.4"
@@ -2820,13 +2819,6 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
-
-summernote@^0.8.16:
-  version "0.8.16"
-  resolved "https://registry.yarnpkg.com/summernote/-/summernote-0.8.16.tgz#73f03a0cfac81d3c473de73ee8cc819cd6189b31"
-  integrity sha512-eheLC4jXAw+GEzmg5+/pCwMchempcU4i+T+/y99rZhALqPW7R1XRQD7rO/VUBboz6awApjPRRD30rRD4XJdEaQ==
-  dependencies:
-    npm-check-updates "^4.0.1"
 
 supports-color@^2.0.0:
   version "2.0.0"
