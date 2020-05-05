@@ -8,7 +8,7 @@ services:
       - /home/rancher/data/taxsysv3/settings.py:/code/taxsysv3/settings.py
       - taxsys_static_volume:/code/staticfiles
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       - db
     environment:
