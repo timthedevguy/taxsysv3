@@ -24,3 +24,9 @@ OIDC_RP_CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 SOCIAL_AUTH_SSODOTTE_SCOPE = [
     os.environ.get("CLIENT_SCOPE"),
 ]
+
+# HUEY = {
+#     'connection': {
+#         'host': 'redis'
+#     }
+# }

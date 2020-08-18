@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'huey.contrib.djhuey',
     'apps.testesi',
     'apps.testauth',
     'apps.landlord',
@@ -136,6 +137,7 @@ ESI_BASE_URL = 'https://esi.evetech.net/'
 TESTESI_GET_CHARACTERS = 'esi/_/characters/{subject}'
 TESTESI_GET_CHARACTER_INFO = 'esi/v4/characters/{character_id}'
 TESTESI_GET_CORPORATION_JOURNAL = 'esi/v4/corporations/{corporation_id}/wallets/{wallet_number}/journal/'
+TESTESI_CLIENT_SCOPES = 'esi-wallet.read_corporation_wallets.v1 urn:sso:characters'
 ESI_UNIVERSE_NAME_SEARCH = 'v2/universe/names/'
 ESI_GET_CORPORATION_HISTORY = 'v1/characters/{character_id}/corporationhistory'
 EVEONLINE_SDE_TABLES = [

@@ -11,11 +11,3 @@ class TestUser(AbstractUser):
     display_name = models.CharField(max_length=200)
     is_sync = models.BooleanField(default=False)
     last_alt_check = models.DateField(null=True)
-    refresh_token = models.TextField(null=True)
-
-    def is_stale(self):
-        if self.last_alt_check is None:
-            return True
-        elif datetime.now() > (self.last_alt_check + timedelta(settings.FORCE_ALT_REFRESH_INTERVAL)):
-            return True
-        return False
