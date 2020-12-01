@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'huey.contrib.djhuey',
+    'huey.contrib.djhuey',
     'apps.testesi',
     'apps.testauth',
     'apps.landlord',

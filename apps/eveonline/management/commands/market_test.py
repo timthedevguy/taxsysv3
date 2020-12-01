@@ -33,20 +33,22 @@ class Command(BaseCommand):
                     '       "invTypes"."portionSize",' \
                     '       "invTypes"."marketGroupID",' \
                     '       (SELECT CASE' \
-                    '                   WHEN "valueInt" IS NULL THEN "valueFloat"' \
-                    '                   ELSE "valueInt" END' \
-                    '        FROM "dgmTypeAttributes"' \
-                    '        WHERE "dgmTypeAttributes"."typeID" = %s' \
-                    '          and "attributeID" = 790)              AS "refineSkill",' \
-                    '       (SELECT count(' \
-                    '                       "materialTypeID")' \
-                    '        FROM "invTypeMaterials"' \
-                    '        WHERE "invTypeMaterials"."typeID" = %s) AS "materialCount",' \
-                    '       t.tax                                    AS "taxOverride",' \
-                    '       t.id AS "overrideID"' \
+                    '            WHEN "valueInt" IS NULL THEN "valueFloat"' \
+                    '            ELSE "valueInt" END' \
+                    '            FROM "dgmTypeAttributes"' \
+                    '            WHERE "dgmTypeAttributes"."typeID" = 19' \
+                    '            AND "attributeID" = 790) as "refineSkill",' \
+                    '       (SELECT count("materialTypeID")' \
+                    '            FROM "invTypeMaterials"' \
+                    '            WHERE "invTypeMaterials"."typeID" = 19) AS "materialCount",' \
+                    '       (SELECT "invGroups"."groupName"' \
+                    '            FROM "invGroups"' \
+                    '            WHERE "invGroups"."groupID" = "invTypes"."groupID") as "groupName",' \
+                    '       (SELECT "invMarketGroups"."marketGroupName"' \
+                    '            FROM "invMarketGroups"' \
+                    '            WHERE "invMarketGroups"."marketGroupID" = "invTypes"."marketGroupID") as "marketGroupName"' \
                     'FROM "invTypes"' \
-                    '         LEFT JOIN tenant_override t ON "invTypes"."typeID" = t."typeID" AND t."tenantID" = %s ' \
-                    'WHERE "invTypes"."typeID" = %s'
+                    'WHERE "invTypes"."typeID" = 19'
             cursor.execute(query, [19, 19, 1, 19])
             rows = dictfetchall(cursor)
             details = rows[0]
