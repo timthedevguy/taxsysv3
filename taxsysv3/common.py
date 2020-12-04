@@ -112,6 +112,9 @@ LOGOUT_REDIRECT_URL = "/"
 OIDC_STORE_ACCESS_TOKEN = True
 OIDC_STORE_ID_TOKEN = True
 
+OIDC_RP_SCOPES = 'openid urn:sso:corp:* urn:sso:characters esi-industry.read_character_mining.v1'
+OIDC_DIRECTOR_RP_SCOPES = 'openid urn:sso:corp:* urn:sso:characters esi-corporations.read_corporation_membership.v1 esi-wallet.read_corporation_wallets.v1 esi-industry.read_character_mining.v1'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

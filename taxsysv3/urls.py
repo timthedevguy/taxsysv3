@@ -24,6 +24,7 @@ def trigger_error(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', decorator_include(login_required, 'apps.tenant.urls')),
+    path('landlord/', decorator_include(login_required, 'apps.landlord.urls')),
     path('accounts/', include('apps.testauth.urls')),
     path('oidc/', include('mozilla_django_oidc.urls')),
     path('sentry-debug/', trigger_error),

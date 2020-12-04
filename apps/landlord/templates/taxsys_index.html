@@ -11,9 +11,9 @@
 
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 
-{% block breadcrumbs %}breakcrumbs{% endblock %}
+{% block breadcrumbs %}{% endblock %}
 
-{% block nav-sidebar %}sidebar{% endblock %}
+{% block nav-sidebar %}{% endblock %}
 
 {% block content %}
 <div id="content-main">
@@ -28,7 +28,7 @@
         <h2>TaxSYS Actions</h2>
         <h3>Tasks</h3>
         <ul class="actionlist">
-            <li class="addlink"> <a href="#">Add new Tenant</a></li>
+            <li class="addlink"> <a href="/admin/tenant/tenant/add/">Add new Tenant</a></li>
         </ul>
     </div>
     <div class="module taxsys_admin" id="recent-actions-module">

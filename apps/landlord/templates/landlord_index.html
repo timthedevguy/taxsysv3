@@ -1,0 +1,28 @@
+{% extends "landlord_base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="fa-pull-left">Current Tenants </h2><button class="btn btn-success btn-xs fa-pull-right"><i class="fas fa-plus"></i> Add Tenant</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tenant Name</th>
+                            <th>Corporations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tenant in tenants %}
+                            <tr>
+                                <td>{{ tenant.tenant_name }}</td>
+                                <td>{{ tenant.corporations.count }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

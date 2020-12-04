@@ -1,0 +1,81 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load active_tag %}
+
+{% block stylesheet %}{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '@fortawesome/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin-style.css' %}{% endblock %}
+
+{% block title %}TaxSYS Landlord Admin | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'dashboard' %}">{{ site_header|default:_('TaxSYS Landlord Admin') }}</a></h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+{#    <div class="breadcrumbs">#}
+{#        <a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>#}
+{#    <a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>#}
+{#    </div>#}
+    <div class="breadcrumbs">
+        <div class="row">
+            <div class="container" style="padding:0;">
+                <div class="col-md-12" style="padding:0;">
+                    <nav id="main-menu">
+                        <ul>
+                            <!--{ add_active request 'dashboard' }-->
+                            <li class=""><a href=""><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                            <li class=""><a href=""><i class="fa fa-newspaper-o" aria-hidden="true"></i> Social Media Articles</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                7 Column
+            </div>
+            <div class="col-md-5">
+                5 Column
+            </div>
+        </div>
+        {% block inner-content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block usertools %}
+    <div id="user-tools">
+            {% block welcome-msg %}
+                Welcome
+                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+            {% endblock %}
+            {% block userlinks %}
+                <a href="">Back to TaxSYS</a>
+                {%  if user.is_superuser %}
+                    / <a href="{% url 'admin:index' %}">Django Admin</a>
+                {% endif %}
+            {% endblock %}
+        </div>
+{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block footer %}
+    <div id="footer"></div>
+
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+
+        });
+    </script>
+    {% block javascripts %}
+    {% endblock %}
+{% endblock %}
+
