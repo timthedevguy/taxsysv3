@@ -13,3 +13,7 @@ class IndexView(TemplateView):
         tenants = Tenant.objects.all()
         context['tenants'] = tenants
         return context
+
+
+class DirectorSuccess(TemplateView):
+    template_name = 'director_success.html'

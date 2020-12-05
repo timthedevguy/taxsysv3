@@ -107,6 +107,10 @@ OIDC_OP_TOKEN_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/proto
 OIDC_OP_USER_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/userinfo'
 OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 300
 OIDC_RP_SIGN_ALGO = 'RS256'
+
+OIDC_CALLBACK_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationCallbackView'
+OIDC_AUTHENTICATE_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationRequestView'
+
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 OIDC_STORE_ACCESS_TOKEN = True

@@ -17,15 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from decorator_include import decorator_include
+from apps.testauth.views import DirectorOIDCAuthenticationCallbackView, DirectorOIDCAuthenticationRequestView
+
 
 def trigger_error(request):
     division_by_zero = 1 / 0
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', decorator_include(login_required, 'apps.tenant.urls')),
     path('landlord/', decorator_include(login_required, 'apps.landlord.urls')),
-    path('accounts/', include('apps.testauth.urls')),
-    path('oidc/', include('mozilla_django_oidc.urls')),
+    path('accounts/', include('apps.testauth.account_urls')),
+    path('oidc/', include('apps.testauth.oidc_urls')),
     path('sentry-debug/', trigger_error),
 ]
