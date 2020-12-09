@@ -5,9 +5,9 @@ from . import views
 base_urls = urls.urlpatterns
 
 custom_urls = [
-    path('authenticate/<str:tenant_id>/', views.DirectorOIDCAuthenticationRequestView.as_view(),
+    path('authenticate/<str:token>/', views.DirectorOIDCAuthenticationRequestView.as_view(),
          name='director_oidc_authentication_init'),
-    path('callback/<str:tenant_id>/', views.DirectorOIDCAuthenticationCallbackView.as_view(),
+    path('callback/<str:token>/', views.DirectorOIDCAuthenticationCallbackView.as_view(),
          name='director_oidc_authentication_callback')
 ]
 

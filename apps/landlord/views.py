@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.http import JsonResponse
 from ..tenant.models import Tenant, Corporation
+from ..testesi import testesi_client
+from django.conf import settings
 
 
 # Create your views here.
@@ -13,7 +16,3 @@ class IndexView(TemplateView):
         tenants = Tenant.objects.all()
         context['tenants'] = tenants
         return context
-
-
-class DirectorSuccess(TemplateView):
-    template_name = 'director_success.html'

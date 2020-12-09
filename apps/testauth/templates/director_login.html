@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block body-class %}hold-transition login-page{% endblock %}
+
+{% block body %}
+
+    <div class="login-box small">
+        <div class="login-logo">
+            <a href="/"><b>Tax</b>SYS</a>
+            <h1>{{ tenant.name }}</h1>
+        </div>
+
+        <div class="card">
+            <div class="card-body login-card-body">
+                <strong>Information</strong>
+                <p>This is the login area for CEO's to setup TaxSYS access to their Corporation Membership and Journal.</p>
+                <p>This login is for the Tenant named <strong>{{ tenant.name }}</strong>.  If this is not you then please contact TEST IT
+                 for a new login URL.</p>
+                <p>Login using the provided link below, follow the instructions to complete setup.  <b>This link expires after use.</b></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <div class="text-center">
+                    <a href="{% url 'director_oidc_authentication_init' token=tenant.token %}"><img
+                            src="{% static '/img/sso.png' %}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <h5><i class="icon fas fa-exclamation-triangle"></i> Warning!</h5>
+            If you are <strong>NOT</strong> the CEO you should not be here! This login page is dedicated to CEOs setting
+            up their TaxSYS instance.
+        </div>
+    </div>
+
+
+{% endblock %}

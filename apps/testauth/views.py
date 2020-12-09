@@ -1,14 +1,17 @@
 from django.shortcuts import render
 import time
-
+from django.views.generic import TemplateView
 from django.contrib import auth
-from django.core.exceptions import SuspiciousOperation
+from django.http import Http404
+from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist, PermissionDenied
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.http import is_safe_url
 from django.utils.module_loading import import_string
 from django.views.generic import View
+from ..tenant.models import Tenant
+from apps.testesi import testesi_client
 
 from mozilla_django_oidc.utils import (absolutify,
                                        import_from_settings)
@@ -37,7 +40,7 @@ class DirectorOIDCAuthenticationRequestView(View):
     def get_settings(attr, *args):
         return import_from_settings(attr, *args)
 
-    def get(self, request, tenant_id=None):
+    def get(self, request, token=None):
         """OIDC client authentication initialization HTTP endpoint"""
         state = get_random_string(self.get_settings('OIDC_STATE_SIZE', 32))
         redirect_field_name = self.get_settings('OIDC_REDIRECT_FIELD_NAME', 'next')
@@ -63,7 +66,7 @@ class DirectorOIDCAuthenticationRequestView(View):
                 'nonce': nonce
             })
 
-        add_state_and_nonce_to_session(request, state, params, tenant_id)
+        add_state_and_nonce_to_session(request, state, params, token)
 
         request.session['oidc_login_next'] = get_next_url(request, redirect_field_name)
 
@@ -98,7 +101,7 @@ class DirectorOIDCAuthenticationCallbackView(View):
     def login_failure(self):
         return HttpResponseRedirect(self.failure_url)
 
-    def login_success(self, tenant_id=None):
+    def login_success(self, token=None):
         auth.login(self.request, self.user)
 
         # Figure out when this id_token will expire. This is ignored unless you're
@@ -106,8 +109,14 @@ class DirectorOIDCAuthenticationCallbackView(View):
         expiration_interval = self.get_settings('OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS', 60 * 15)
         self.request.session['oidc_id_token_expiration'] = time.time() + expiration_interval
 
-        if tenant_id:
-            return HttpResponseRedirect('/landlord/director/success')
+        if token:
+            # Get the tenant by the token
+            try:
+                tenant = Tenant.objects.get(token=token)
+                return HttpResponseRedirect(f'/{tenant.identifier}/director/success/?token={tenant.token}')
+            except ObjectDoesNotExist:
+                # If the token is no longer valid
+                raise Http404('Tenant not found')
         else:
             return HttpResponseRedirect(self.success_url)
 
@@ -140,10 +149,10 @@ class DirectorOIDCAuthenticationCallbackView(View):
             # prevent replay attacks.
             nonce = request.session['oidc_states'][state]['nonce']
 
-            tenant_id = None
+            token = None
             # Check if Tenant ID is part of session
-            if 'tenant_id' in request.session['oidc_states'][state]:
-                tenant_id = request.session['oidc_states'][state]['tenant_id']
+            if 'token' in request.session['oidc_states'][state]:
+                token = request.session['oidc_states'][state]['token']
 
             del request.session['oidc_states'][state]
 
@@ -160,17 +169,17 @@ class DirectorOIDCAuthenticationCallbackView(View):
                 'nonce': nonce,
             }
 
-            if tenant_id:
-                kwargs['tenant_id'] = tenant_id
+            if token:
+                kwargs['token'] = token
 
             self.user = auth.authenticate(**kwargs)
 
             if self.user and self.user.is_active:
-                return self.login_success(tenant_id=tenant_id)
+                return self.login_success(token=token)
         return self.login_failure()
 
 
-def add_state_and_nonce_to_session(request, state, params, tenant_id=None):
+def add_state_and_nonce_to_session(request, state, params, token=None):
     """
     Stores the `state` and `nonce` parameters in a session dictionary including the time when it
     was added. The dictionary can contain multiple state/nonce combinations to allow parallel
@@ -195,7 +204,7 @@ def add_state_and_nonce_to_session(request, state, params, tenant_id=None):
     # state by finding out
     # which element has the oldest "add_on" time.
     limit = import_from_settings('OIDC_MAX_STATES', 50)
-    test = len(request.session['oidc_states'])
+    # test = len(request.session['oidc_states'])
     if len(request.session['oidc_states']) >= limit:
         oldest_state = None
         oldest_added_on = time.time()
@@ -206,14 +215,27 @@ def add_state_and_nonce_to_session(request, state, params, tenant_id=None):
         if oldest_state:
             del request.session['oidc_states'][oldest_state]
 
-    if tenant_id:
+    if token:
         request.session['oidc_states'][state] = {
             'nonce': nonce,
             'added_on': time.time(),
-            'tenant_id': tenant_id
+            'token': token
         }
     else:
         request.session['oidc_states'][state] = {
             'nonce': nonce,
             'added_on': time.time(),
         }
+
+
+class DirectorLoginView(TemplateView):
+    template_name = 'director_login.html'
+
+    def get_context_data(self, **kwargs):
+        access_token = testesi_client.get_access_token()
+        context = super().get_context_data(**kwargs)
+        try:
+            context['tenant'] = Tenant.objects.get(token=context['token'])
+        except ObjectDoesNotExist:
+            raise PermissionDenied
+        return context

@@ -3,6 +3,7 @@ import sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+
 sentry_sdk.init(
     dsn="https://c973798b071c457c937ab6e646ff1cfc@sentry.io/1761193",
     integrations=[DjangoIntegration()],
@@ -100,6 +101,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'testauth.TestUser'
+
 # https://sso.pleaseignore.com/auth/realms/auth-ng/.well-known/openid-configuration
 OIDC_OP_JWKS_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/certs'
 OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/auth'
@@ -111,8 +113,8 @@ OIDC_RP_SIGN_ALGO = 'RS256'
 OIDC_CALLBACK_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationCallbackView'
 OIDC_AUTHENTICATE_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationRequestView'
 
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+# LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/accounts/profile/"
 OIDC_STORE_ACCESS_TOKEN = True
 OIDC_STORE_ID_TOKEN = True
 

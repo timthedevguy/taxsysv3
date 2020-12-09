@@ -3,41 +3,40 @@ from .models import Tenant, Corporation
 from django.utils.html import format_html
 from django.urls import reverse
 from django.urls import path
+import uuid
 
 
 # Register your models here.
 class TenantAdmin(admin.ModelAdmin):
     list_display = (
         'name',
-        'identifier',
-        'tenant_actions'
+        'token',
+        'login_url'
     )
+
     readonly_fields = (
-        'tenant_actions',
-        'id'
+        'id',
+        'token',
+        'identifier'
     )
 
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path('<int:account_id>/corporation/', self.admin_site.admin_view(self.add_corporation), name='add-corporation')
-        ]
-        return custom_urls + urls
+    # Get our Request object to generate the absolute url for admin view
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        self.request = request
+        return qs
 
+    def login_url(self, obj):
+        return self.request.build_absolute_uri(reverse('director_login', args=[obj.token]))
 
+    login_url.short_description = 'Director Login URL'
 
-    def tenant_actions(self, obj):
-        return format_html(
-            '<a class="button" href="{}">Add Corporation</a>',
-            reverse('admin:add-corporation', args=[obj.pk])
-        )
-
-    def add_corporation(self, request, account_id, *args, **kwargs):
-        pass
-
-    tenant_actions.short_description = 'Tenant Actions'
-    tenant_actions.allow_tags = True
-    pass
+    # def save_model(self, request, obj, form, change):
+    #     # Generate a UUID4 as a Unique Identifier for this tenant,
+    #     # used in Director Login URL
+    #     if obj.identifier == '':
+    #         obj.identifier = uuid.uuid4()
+    #     super().save_model(request, obj, form, change)
 
 
 class CorporationAdmin(admin.ModelAdmin):
