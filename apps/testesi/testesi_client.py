@@ -34,8 +34,6 @@ class AccessToken:
         return True
 
 
-
-
 def get_characters(subject, **kwargs):
     return get(settings.TESTESI_GET_CHARACTERS, get_access_token(), subject=subject)
 
@@ -48,7 +46,7 @@ def get_corporation_journal(corporation_id, wallet_number, **kwargs):
     return get(settings.TESTESI_GET_CORPORATION_JOURNAL, get_access_token(), corporation_id=corporation_id,
                wallet_number=wallet_number, **kwargs)
 
-# test
+
 def get(url, access_token, **kwargs):
     full_url = str.format('{}{}', settings.TESTESI_BASE_URL, str.format(url, **kwargs))
     headers = {'Authorization': str.format('JWT {}', access_token)}
