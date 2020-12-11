@@ -1,8 +1,5 @@
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 from .models import TestUser
-from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured
-from django.urls import reverse
-from mozilla_django_oidc.utils import absolutify
 
 
 class TestOIDC(OIDCAuthenticationBackend):

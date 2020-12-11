@@ -95,13 +95,13 @@ STATICFILES_DIRS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    # 'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
     'apps.testauth.utils.TestOIDC',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 AUTH_USER_MODEL = 'testauth.TestUser'
 
+# TEST Auth OIDC Settings
 # https://sso.pleaseignore.com/auth/realms/auth-ng/.well-known/openid-configuration
 OIDC_OP_JWKS_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/certs'
 OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protocol/openid-connect/auth'
@@ -110,45 +110,37 @@ OIDC_OP_USER_ENDPOINT = 'https://sso.pleaseignore.com/auth/realms/auth-ng/protoc
 OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 300
 OIDC_RP_SIGN_ALGO = 'RS256'
 
+# OIDC Options
+OIDC_STORE_ACCESS_TOKEN = True
+OIDC_STORE_ID_TOKEN = True
 OIDC_CALLBACK_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationCallbackView'
 OIDC_AUTHENTICATE_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationRequestView'
 
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
-OIDC_STORE_ACCESS_TOKEN = True
-OIDC_STORE_ID_TOKEN = True
-
+# OIDC Scopes
 OIDC_RP_SCOPES = 'openid urn:sso:corp:* urn:sso:characters esi-industry.read_character_mining.v1'
 OIDC_DIRECTOR_RP_SCOPES = 'openid urn:sso:corp:* urn:sso:characters esi-corporations.read_corporation_membership.v1 esi-wallet.read_corporation_wallets.v1 esi-industry.read_character_mining.v1'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'mozilla_django_oidc': {
-            'handlers': ['console'],
-            'level': 'DEBUG'
-        },
-    },
-}
+# Login URLs
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 FORCE_ALT_REFRESH_INTERVAL = 14
 
 # ESI/TEST ESI Base URLs
 TESTESI_BASE_URL = 'https://auth.pleaseignore.com/'
 ESI_BASE_URL = 'https://esi.evetech.net/'
-# ESI/TEST ESI Endpoints in use
+
+# TEST ESI Endpoints
 TESTESI_GET_CHARACTERS = 'esi/_/characters/{subject}'
 TESTESI_GET_CHARACTER_INFO = 'esi/v4/characters/{character_id}'
 TESTESI_GET_CORPORATION_JOURNAL = 'esi/v4/corporations/{corporation_id}/wallets/{wallet_number}/journal/'
 TESTESI_CLIENT_SCOPES = 'esi-wallet.read_corporation_wallets.v1 urn:sso:characters'
+
+# CCP ESI Endpoints
 ESI_UNIVERSE_NAME_SEARCH = 'v2/universe/names/'
 ESI_GET_CORPORATION_HISTORY = 'v1/characters/{character_id}/corporationhistory'
+
+# SDE Tables Used
 EVEONLINE_SDE_TABLES = [
     'invTypes',
     'invTypeMaterials',

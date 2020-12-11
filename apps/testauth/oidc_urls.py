@@ -2,6 +2,8 @@ from django.urls import path, include
 from mozilla_django_oidc import urls
 from . import views
 
+# This combines the urls for MozillaOIDC and my custom ones for Director logins
+
 base_urls = urls.urlpatterns
 
 custom_urls = [

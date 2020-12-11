@@ -1,4 +1,3 @@
-from django.shortcuts import render
 import time
 from django.views.generic import TemplateView
 from django.contrib import auth
@@ -7,8 +6,6 @@ from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist, Perm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.crypto import get_random_string
-from django.utils.http import is_safe_url
-from django.utils.module_loading import import_string
 from django.views.generic import View
 from ..tenant.models import Tenant
 from apps.testesi import testesi_client
