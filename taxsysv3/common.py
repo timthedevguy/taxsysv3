@@ -113,8 +113,8 @@ OIDC_RP_SIGN_ALGO = 'RS256'
 OIDC_CALLBACK_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationCallbackView'
 OIDC_AUTHENTICATE_CLASS = 'apps.testauth.views.DirectorOIDCAuthenticationRequestView'
 
-# LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/accounts/profile/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 OIDC_STORE_ACCESS_TOKEN = True
 OIDC_STORE_ID_TOKEN = True
 

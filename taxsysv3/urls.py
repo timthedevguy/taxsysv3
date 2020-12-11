@@ -27,10 +27,11 @@ def trigger_error(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('landlord/', decorator_include(login_required, 'apps.landlord.urls')),
-    path('accounts/', include('apps.testauth.account_urls')),
     # path('accounts/profile/', decorator_include(login_required, 'apps.tenant.accounts_urls')),
+    path('accounts/', include('apps.testauth.account_urls')),
     path('oidc/', include('apps.testauth.oidc_urls')),
     # path('sentry-debug/', trigger_error),
     re_path('(?P<tenant_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/',
             decorator_include(login_required, 'apps.tenant.urls')),
+    path('', decorator_include(login_required, 'apps.tenant.accounts_urls')),
 ]
