@@ -137,8 +137,9 @@ TESTESI_GET_CORPORATION_JOURNAL = 'esi/v4/corporations/{corporation_id}/wallets/
 TESTESI_CLIENT_SCOPES = 'esi-wallet.read_corporation_wallets.v1 urn:sso:characters'
 
 # CCP ESI Endpoints
-ESI_UNIVERSE_NAME_SEARCH = 'v2/universe/names/'
-ESI_GET_CORPORATION_HISTORY = 'v1/characters/{character_id}/corporationhistory'
+ESI_UNIVERSE_NAME_SEARCH = '/v3/universe/names/'
+ESI_GET_CORPORATION_HISTORY = '/v1/characters/{character_id}/corporationhistory'
+ESI_GET_CORPORATION = '/v4/corporations/{corporation_id}/'
 
 # SDE Tables Used
 EVEONLINE_SDE_TABLES = [

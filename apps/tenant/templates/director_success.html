@@ -23,22 +23,19 @@
 
                 </div>
 
-                <div class="progress mb-3" style="margin-bottom:0px !important;">
+                <div class="progress mb-3" style="margin-bottom:5px !important;">
                     <div class="progress-bar bg-info" id="director-progress" role="progressbar" aria-valuenow="0"
                          aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                         <span class="sr-only">0% Complete</span>
                     </div>
                 </div>
-                <small><p id="status-text">Getting Characters...</p></small>
-
-                <a href="{% url 'logout' %}" class="btn btn-success btn-block disabled" id="continue-button"><i
-                        class="fas fa-sync-alt fa-spin"></i></a>
+                <small><i class="fas fa-sync-alt fa-spin fa-pull-left" style="margin-top:2px;"></i><p id="status-text">Getting Characters...</p></small>
             </div>
         </div>
 
         <div class="alert alert-info">
             <h5><i class="icon fas fa-info"></i> Info</h5>
-            Do not close this window until complete
+            Do not close this window until complete, once process is complete you will be logged out.
         </div>
     </div>
 
@@ -50,9 +47,25 @@
 
         $(document).ready(() => {
 
-            //$.get('', (r) => {
-            //    alert(r.message);
-            //},'json');
+            let total = {{ character_count }};
+            let step = 100/total;
+
+            var updateProgress = window.setInterval(() => {
+
+                $.get("{% url 'ajax_director_get_count' tenant_id=tenant_id %}", (r) => {
+
+                    if(r.count > 0 & r.count < total) {
+                        $('#status-text').html('Processed ' + r.count + ' characters...');
+                        $('#director-progress').attr('style', 'width:' + (r.count * step) + '%');
+                    } else if(r.count >= total) {
+                        window.clearInterval(updateProgress);
+                        window.location = "{% url 'logout' %}";
+                    }
+
+                }, 'json');
+
+            },1000);
+
         });
 
     </script>

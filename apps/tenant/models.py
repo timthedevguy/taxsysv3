@@ -20,7 +20,6 @@ class Corporation(models.Model):
     name = models.CharField(null=False, max_length=255)
     corporation_id = models.IntegerField(null=False)
     ceo_id = models.IntegerField(null=False)
-    ceo_name = models.CharField(null=False, max_length=255)
     last_pull = models.DateField(null=True)
     processPayments = models.BooleanField(default=False)
     processTaxes = models.BooleanField(default=False)
@@ -35,6 +34,7 @@ class Character(models.Model):
     name = models.CharField(null=False, max_length=255)
     corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE)
     isValid = models.BooleanField(null=False, default=False)
+    join_date = models.DateField(null=False)
     start_date = models.DateField(null=True)
     user = models.ForeignKey(TestUser, models.PROTECT)
 

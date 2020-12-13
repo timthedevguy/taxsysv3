@@ -10,6 +10,19 @@ def get_markets_region_orders(region_id, **kwargs):
     return _request('/v1/markets/{region_id}/orders/', 'GET', region_id=region_id, success_status_code=200, **kwargs)
 
 
+def get_character_corporation_history(character_id, **kwargs):
+    return _request(settings.ESI_GET_CORPORATION_HISTORY, 'GET', character_id=character_id,
+                    success_status_code=200, **kwargs)
+
+
+def get_names(ids, **kwargs):
+    return _request(settings.ESI_UNIVERSE_NAME_SEARCH, 'POST', data=ids, success_status_code=200, **kwargs)
+
+
+def get_corporation(corporation_id, **kwargs):
+    return _request(settings.ESI_GET_CORPORATION, 'GET', corporation_id=corporation_id, success_status_code=200)
+
+
 def _build_url(url, **kwargs):
     # This method builds the URL using any Query Params present in the kwargs dict
 
@@ -65,8 +78,13 @@ def _request(url, method, **kwargs):
         else:
             result['page'] = 1
 
-        result['pages'] = int(response.headers['x-pages'])
-        result['etag'] = response.headers['etag']
+        if 'x-pages' in response.headers:
+            result['pages'] = int(response.headers['x-pages'])
+        else:
+            result['pages'] = 1
+
+        if 'etag' in response.headers:
+            result['etag'] = response.headers['etag']
 
         response_data = json.loads(response.text)
 

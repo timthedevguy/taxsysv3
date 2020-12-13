@@ -66,7 +66,7 @@ def get(url, access_token, **kwargs):
     if response.status_code == 200:
         return json.loads(response.text)
     else:
-        raise Exception('NOT AUTHORIZED')
+        raise Exception(f'TESTESI: {response.status_code} :: {response.text}')
 
     return None
 
