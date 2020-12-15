@@ -30,7 +30,6 @@ def get_director_details(user, characters, tenant_pk):
             corp = Corporation(name=corporation_info['name'])
             corp.corporation_id = corporation
             corp.ceo_id = corporation_info['ceo_id']
-            corp.tenant_id = tenant_pk
             corp.save()
 
     for character_id in characters:

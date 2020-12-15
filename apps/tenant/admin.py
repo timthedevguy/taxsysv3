@@ -24,6 +24,11 @@ class TenantAdmin(admin.ModelAdmin):
         'identifier'
     )
 
+    search_fields = (
+        'name',
+        'identifier'
+    )
+
     # Get our Request object to generate the absolute url for admin view
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -36,8 +41,13 @@ class TenantAdmin(admin.ModelAdmin):
     login_url.short_description = 'Director Login URL'
 
     def save_model(self, request, obj, form, change):
+        # Check if new item or changed item
         if not change:
             self.create_perms(obj)
+        else:
+            # Check if Name was changed
+            if 'name' in form.changed_data:
+                self.rename_perms(obj)
 
         super().save_model(request, obj, form, change)
 
@@ -76,6 +86,29 @@ class TenantAdmin(admin.ModelAdmin):
         group = Group.objects.create(name=f'{obj.name} Auditors')
         group.permissions.add(permission_auditor)
 
+    def rename_perms(self, obj):
+
+        old = Tenant.objects.get(pk=obj.id)
+
+        perm = Permission.objects.get(codename=f'tenant_{obj.identifier}_admin')
+        perm.name = f'{obj.name} Admin'
+        perm.save()
+        perm = Permission.objects.get(codename=f'tenant_{obj.identifier}_accountant')
+        perm.name = f'{obj.name} Accountant'
+        perm.save()
+        perm = Permission.objects.get(codename=f'tenant_{obj.identifier}_auditor')
+        perm.name = f'{obj.name} Auditor'
+        perm.save()
+        group = Group.objects.get(name=f'{old.name} Administrators')
+        group.name = f'{obj.name} Administrators'
+        group.save()
+        group = Group.objects.get(name=f'{old.name} Accountants')
+        group.name = f'{obj.name} Accountants'
+        group.save()
+        group = Group.objects.get(name=f'{old.name} Auditors')
+        group.name = f'{obj.name} Auditors'
+        group.save()
+
     def delete_perms(self, obj):
         # Delete Groups
         Group.objects.get(name=f'{obj.name} Auditors').delete()
@@ -89,6 +122,23 @@ class TenantAdmin(admin.ModelAdmin):
 
 
 class CorporationAdmin(admin.ModelAdmin):
+    search_fields = (
+        'name',
+        'corporation_id'
+    )
+
+    list_display = (
+        'name',
+        'corporation_id',
+        'last_pull',
+        'process_payments',
+        'process_taxes',
+        'tenant_name'
+    )
+
+    def tenant_name(self, obj):
+        return obj.tenant.name
+
     pass
 
 

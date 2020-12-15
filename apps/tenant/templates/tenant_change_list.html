@@ -95,6 +95,72 @@
                 Director can provide the URL to other Directors if needed for the same tenant.</p>
             <p>This URL should <strong>NOT</strong> be given to non-CEO members!!!</p>
             <p>Using this URL auto sets the TEST Auth account as an Admin on the Tenant and configures Corp access.</p>
+            <h3>Permissions</h3>
+            <p>Creating a new Tenant will create three new permissions and three new groups for that tenant.  Tenant
+            name can be modified after, groups will update accordingly.</p>
+            <div style="margin-left:10px;">
+                <h4>Permissions</h4>
+                <table class="table" style="margin-bottom:10px;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>CodeName</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><i>{Tenant Name}</i> Administrator</td>
+                            <td>tenant_<i>{UUID}</i>_admin</td>
+                            <td>Grants Admin Rights to user</td>
+                        </tr>
+                        <tr>
+                            <td><i>{Tenant Name}</i> Accountant</td>
+                            <td>tenant_<i>{UUID}</i>_accountant</td>
+                            <td>Grants Accountant Rights to user</td>
+                        </tr>
+                        <tr>
+                            <td><i>{Tenant Name}</i> Auditor</td>
+                            <td>tenant_<i>{UUID}</i>_auditor</td>
+                            <td>Grants Auditor Rights to user</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Groups</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Members</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><i>{Tenant Name}</i> Administrators</td>
+                            <td>
+                                <i>{Tenant Name}</i> Administrator<br/>
+                                <i>{Tenant Name}</i> Accountant<br/>
+                                <i>{Tenant Name}</i> Auditor
+                            </td>
+                            <td>Grants Full Admin Rights to user</td>
+                        </tr>
+                        <tr>
+                            <td><i>{Tenant Name}</i> Accountants</td>
+                            <td>
+                                <i>{Tenant Name}</i> Accountant<br/>
+                                <i>{Tenant Name}</i> Auditor
+                            </td>
+                            <td>Grants Full Accountant Rights to user</td>
+                        </tr>
+                        <tr>
+                            <td><i>{Tenant Name}</i> Auditors</td>
+                            <td><i>{Tenant Name}</i> Auditor</td>
+                            <td>Grants Auditor Rights to user</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}

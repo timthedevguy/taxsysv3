@@ -21,9 +21,9 @@ class Corporation(models.Model):
     corporation_id = models.IntegerField(null=False)
     ceo_id = models.IntegerField(null=False)
     last_pull = models.DateField(null=True)
-    processPayments = models.BooleanField(default=False)
-    processTaxes = models.BooleanField(default=False)
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    process_payments = models.BooleanField(default=False)
+    process_taxes = models.BooleanField(default=False)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name

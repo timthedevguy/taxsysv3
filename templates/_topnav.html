@@ -1,3 +1,4 @@
+{% load tenant_perms %}
 <!--<nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
         <div class="navbar-header">
@@ -57,6 +58,27 @@
                 <li class="nav-item">
                     <a href="index3.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
                 </li>
+{#                {% get_tenant_perm request.user tenant_id as user_level %}#}
+{#                {{ user_level }}#}
+{#                {% if user_level > 0 %}#}
+{#                <li class="nav-item dropdown">#}
+{#                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"#}
+{#                       class="nav-link dropdown-toggle">Admin</a>#}
+{#                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"#}
+{#                        style="left: 0px; right: inherit;">#}
+{#                        <li><a href="#" class="dropdown-item">Tax Evaders</a></li>#}
+{#                        <li><a href="#" class="dropdown-item">Master Ledger</a></li>#}
+{#                        <li class=""><a href="#" class="dropdown-item">Users</a></li>#}
+{#                        <li class="dropdown-divider"></li>#}
+{#                        <li class=""><a href="#" class="dropdown-item">Settings</a></li>#}
+{#                        <li class=""><a href="#" class="dropdown-item">Tax Rate Overrides</a></li>#}
+{#                        <li class=""><a href="#" class="dropdown-item">Nightly Log</a></li>#}
+{#                        <li class=""><a href="#" class="dropdown-item">Production Log</a></li>#}
+{#                        <li class="dropdown-divider"></li>#}
+{#                        <li><a href="#" class="dropdown-item">Developer Tools</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                {% endif %}#}
             </ul>
 
             <!-- Right navbar links -->

@@ -13,6 +13,7 @@ import logging
 from secrets import token_urlsafe
 from .mixins import TenantPermissionRequireMixin
 from ..eveonline import esi
+import re
 
 
 # Create your views here.
@@ -21,6 +22,20 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        user_perms = self.request.user.get_all_permissions()
+        admin_tenants = []
+
+        for user_perm in user_perms:
+            if 'tenant.tenant_' in user_perm:
+                m = re.search(
+                    '^tenant\.tenant_(?P<tenant_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})_admin$',
+                    user_perm)
+                if m is not None:
+                    if len(m.groups()) == 1:
+                        if m.group(1) not in admin_tenants:
+                            admin_tenants.append(m.group(1))
+
         return context
 
     def get(self, request, *args, **kwargs):
