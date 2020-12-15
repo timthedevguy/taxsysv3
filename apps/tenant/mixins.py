@@ -4,6 +4,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.shortcuts import resolve_url
+from .models import Tenant
 
 
 class TenantPermissionRequireMixin(PermissionRequiredMixin):
@@ -25,3 +26,17 @@ class TenantPermissionRequireMixin(PermissionRequiredMixin):
         else:
             perms = f'tenant.tenant_{self.kwargs["tenant_id"]}_{self.permission_required}'
         return perms
+
+
+class TenantContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if 'tenant_id' in context['view'].kwargs:
+            tenant_id = context['view'].kwargs['tenant_id']
+            if 'tenant_id' not in context:
+                context['tenant_id'] = tenant_id
+            context['tenant'] = Tenant.objects.get(identifier=tenant_id)
+        else:
+            raise Exception
+
+        return context

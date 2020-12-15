@@ -1,45 +1,5 @@
 {% extends 'internal.html' %}
 {% load static %}
 {% block content %}
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-university"></i> Tax Accounts</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                    <table class="table table-striped table-sm">
-                        <thead>
-                        <th>Name</th>
-                        <th>Characters</th>
-                        <th>Balance</th>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>0.0 Massive Dynamic</td>
-                            <td>15</td>
-                            <td>134,000,000<small>ISK</small></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
-            </div>
-
-        </div>
-        <div class="col-md-4">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>14,000,000,000 <small>ISK</small></h3>
-
-                    <p>You owe taxes</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-ios-cash"></i>
-                </div>
-                {#                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>#}
-            </div>
-        </div>
-    </div>
+Normal page for tenant {{ tenant.name }}
 {% endblock %}

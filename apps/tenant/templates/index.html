@@ -1,0 +1,68 @@
+{% extends 'internal.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-university"></i> Tax Accounts</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                        <th>Name</th>
+                        <th>Characters</th>
+                        <th>Balance</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>0.0 Massive Dynamic</td>
+                            <td>15</td>
+                            <td>134,000,000<small>ISK</small></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>0 <small>ISK</small></h3>
+
+                    <p>You do not owe any taxes</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-money-bill-alt"></i>
+                </div>
+                {#                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>#}
+            </div>
+            {% if missing %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title text-danger"><i class="fas fa-exclamation-triangle"></i> Tenants not Configured</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <p>You are an Administrator on the following Tenants and have not configured any Corporations for either Taxing or Payments.  Please
+                         use the provided links to access the Administrator page and configure the Tenant.</p>
+                        <table class="table">
+                            <tbody>
+                                {% for tenant in missing %}
+                                    <tr>
+                                        <td>{{ tenant.name }}</td>
+                                        <td><a href="{% url 'tenant_admin' tenant.identifier %}" class="btn btn-block btn-xs btn-success">Configure</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -11,3 +11,6 @@ class TestUser(AbstractUser):
     display_name = models.CharField(max_length=200)
     is_sync = models.BooleanField(default=False)
     last_alt_check = models.DateField(null=True)
+
+    def __str__(self):
+        return self.display_name

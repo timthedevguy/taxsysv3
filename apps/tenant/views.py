@@ -1,7 +1,8 @@
 import json
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
+from .forms import SettingForm
 from django.contrib.auth.models import Group
 from django.conf import settings
 from django.http import JsonResponse, Http404
@@ -11,21 +12,24 @@ from .tasks import get_director_details
 from huey.contrib import djhuey
 import logging
 from secrets import token_urlsafe
-from .mixins import TenantPermissionRequireMixin
+from .mixins import TenantPermissionRequireMixin, TenantContextMixin
 from ..eveonline import esi
 import re
+from .models import Corporation, Tenant
 
 
 # Create your views here.
 class IndexView(TemplateView):
-    template_name = 'tenant_index.html'
+    template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         user_perms = self.request.user.get_all_permissions()
-        admin_tenants = []
+        tenants = []
+        missing = []
 
+        # Find tenants that user is Admin of
         for user_perm in user_perms:
             if 'tenant.tenant_' in user_perm:
                 m = re.search(
@@ -33,8 +37,17 @@ class IndexView(TemplateView):
                     user_perm)
                 if m is not None:
                     if len(m.groups()) == 1:
-                        if m.group(1) not in admin_tenants:
-                            admin_tenants.append(m.group(1))
+                        if m.group(1) not in tenants:
+                            tenants.append(m.group(1))
+
+        tenants = Tenant.objects.filter(identifier__in=tenants)
+
+        for tenant in tenants:
+            if len(tenant.corporations()) == 0:
+                missing.append(tenant)
+
+        if len(missing) > 0:
+            context['missing'] = missing
 
         return context
 
@@ -115,6 +128,20 @@ def ajax_test(request, tenant_id):
     return JsonResponse({'message': 'Call Finished'}, safe=False)
 
 
-class TenantAdminIndex(TenantPermissionRequireMixin, TemplateView):
+class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, FormView):
     permission_required = 'admin'
     template_name = 'tenant_admin_index.html'
+    form_class = SettingForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['tenant'] = Tenant.objects.get(identifier=self.kwargs['tenant_id'])
+        return context
+
+
+class TenantIndex(TenantContextMixin, TemplateView):
+    template_name = 'tenant_index.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     return context

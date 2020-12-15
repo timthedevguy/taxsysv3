@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tenant, Corporation
+from .models import Tenant, Corporation, Character, Setting
 from django.utils.html import format_html
 from django.urls import reverse
 from django.urls import path
@@ -133,14 +133,24 @@ class CorporationAdmin(admin.ModelAdmin):
         'last_pull',
         'process_payments',
         'process_taxes',
-        'tenant_name'
+        'tenant'
     )
 
-    def tenant_name(self, obj):
-        return obj.tenant.name
 
+class CharacterAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'character_id',
+        'corporation',
+        'join_date'
+    )
+
+
+class SettingsAdmin(admin.ModelAdmin):
     pass
 
 
 admin.site.register(Tenant, TenantAdmin)
 admin.site.register(Corporation, CorporationAdmin)
+admin.site.register(Character, CharacterAdmin)
+admin.site.register(Setting, SettingsAdmin)

@@ -1,1 +1,9 @@
+{% extends 'internal.html' %}
+{% load static %}
+{% block content %}
 Admin page for tenant {{ tenant.name }}
+    <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Send message">
+</form>
+{% endblock %}
