@@ -1,9 +1,173 @@
 {% extends 'internal.html' %}
 {% load static %}
 {% block content %}
-Admin page for tenant {{ tenant.name }}
-    <form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Send message">
-</form>
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post">
+                <p class="text-muted"><small>Note: All save buttons save entire form</small></p>
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-cog"></i> Settings <small>{{ tenant.name }}</small></h3>
+                </div>
+                <div class="card-body p-0">
+                    {% csrf_token %}
+                    <table class="table" id="tenant-settings-table">
+                        <tbody>
+                        <tr>
+                            <td class="table-title" colspan="2">Tax Settings<button class="btn btn-success float-right btn-xs" type="submit"><i class="fas fa-save"></i> Save Changes</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+                                <p>Only Ore mined after this date will be taxed. When a new Member joins the Corporation then the Employment Start Date will be used.</p>
+                            </td>
+                            <td><input type="date" name="{{ form.start_date.html_name }}" class="form-control"
+                                       value="{{ form.start_date.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.mineral_tax_rate.id_for_label }}">Mineral Tax Rate</label>
+                                <p>Tax value of Minerals at this rate. Minerals are refined from Ore/Ice/Moon.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.mineral_tax_rate.html_name }}"
+                                       class="form-control" value="{{ form.mineral_tax_rate.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.goo_tax_rate.id_for_label }}">Goo Tax Rate</label>
+                                <p>Tax value of Moon Goo at this rate. Moon Goo is refined from Moon Ore.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.goo_tax_rate.html_name }}" class="form-control"
+                                       value="{{ form.goo_tax_rate.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="table-title">Market Settings<button class="btn btn-success float-right btn-xs" type="submit"><i class="fas fa-save"></i> Save Changes</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.source.id_for_label }}">Source Market</label>
+                                <p>This is one of the Stations below, or a RegionId. The valid Station Ids are:</p>
+                                <ul>
+                                    <li>Jita - 60003760</li>
+                                    <li>Amarr - 60008494</li>
+                                    <li>Dodixie - 60011866</li>
+                                    <li>Rens - 60004588</li>
+                                    <li>Hek - 60005686</li>
+                                </ul>
+                                <p>Market information is pulled from <a href="https://market.fuzzwork.co.uk/api/">Fuzzworks Market API</a></p>
+                            </td>
+                            <td><input type="number" name="{{ form.source.html_name }}" class="form-control"
+                                       value="{{ form.source.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.source_type.id_for_label }}">Source Order Type</label>
+                                <p>This the type of transactions to use for statistic data, either 'buy' or 'sell'.</p>
+                            </td>
+                            <td><input type="text" name="{{ form.source_type.html_name }}" class="form-control"
+                                       value="{{ form.source_type.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.source_stat.id_for_label }}">Source Stat</label>
+                                <p>This the type of stat data to use. Current Fuzzworks options are:</p>
+                                <ul>
+                                    <li>weightedAverage</li>
+                                    <li>max</li>
+                                    <li>min</li>
+                                    <li>stddev</li>
+                                    <li>median</li>
+                                    <li>percentile</li>
+                                </ul>
+                            </td>
+                            <td><input type="text" name="{{ form.source_stat.html_name }}" class="form-control"
+                                       value="{{ form.source_stat.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.source_modifier.id_for_label }}">Source Modifier</label>
+                                <p>This is the percentage of the Source Stat to use for value calculations (ie: 90 would indicate to use 90% of the Source Stat)</p>
+                            </td>
+                            <td><input type="number" name="{{ form.source_modifier.html_name }}" class="form-control"
+                                       value="{{ form.source_modifier.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.ice_refine_rate.id_for_label }}">Ice Refine Rate</label>
+                                <p>The Refine rate to use to calculate value of mined ice. The higher the rate the more valuable the ice becomes as it is broken down into refined minerals.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.ice_refine_rate.html_name }}" class="form-control"
+                                       value="{{ form.ice_refine_rate.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.ore_refine_rate.id_for_label }}">Ore Refine Rate</label>
+                                <p>The Refine rate to use to calculate value of mined ore. The higher the rate the more valuable the ore becomes as it is broken down into refined minerals.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.ore_refine_rate.html_name }}" class="form-control"
+                                       value="{{ form.ore_refine_rate.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.moon_refine_rate.id_for_label }}">Moon Refine Rate</label>
+                                <p>The Refine rate to use to calculate value of mined moon ore. The higher the rate the more valuable the ore becomes as it is broken down into refined minerals.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.moon_refine_rate.html_name }}" class="form-control"
+                                       value="{{ form.moon_refine_rate.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="table-title">Late Fee Settings<button class="btn btn-success float-right btn-xs" type="submit"><i class="fas fa-save"></i> Save Changes</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.late_fees_enabled.id_for_label }}">Late Fees Enabled</label>
+                                <p>Enable the Late Fee System. The Late Fee System has two modes of operation.</p>
+                                <dl class="dl-horizontal" style="margin-top:10px;">
+                                    <dt>Continuous Assessment</dt>
+                                    <dd>This mode will check the Balance of each account daily, if the account owes
+                                        more than <strong>Late Fee Threshold</strong> the <strong>Late Fee Charge</strong>
+                                        will be assessed.</dd>
+                                    <dt>Monthly Assessment</dt>
+                                    <dd>This mode will check the Balance of each account on the specified
+                                        <strong>Late Fee Day</strong>, if the account owes more than
+                                        <strong>Late Fee Threshold</strong> from the previous month then <strong>Late Fee Charge</strong>
+                                        will be assessed.</dd>
+                                </dl>
+                            </td>
+                            <td><input type="checkbox" name="{{ form.late_fees_enabled.name }}" {% if form.late_fees_enabled.value %}checked{% endif %} id="{{ form.late_fees_enabled.id_for_label }}"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.late_fee_threshold.id_for_label }}">Late Fee Threshold</label>
+                                <p>Late Fee Charge will be assessed only if the Outstanding Balance of the account is greater than this number. This can be set to 0 to charge any account that has an Outstanding Balance. Note: The number in this field should be POSITIVE. Outstanding Balances are Negative, I do the tricky stuff behind the scenes.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.late_fee_threshold.html_name }}" class="form-control"
+                                       value="{{ form.late_fee_threshold.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.late_fee_day.id_for_label }}">Late Fee Day</label>
+                                <p>The day to check if previous months Outstanding Balance is over Late Fee Threshold. Note: See Modes of Operation in Enable Late Fees. To Disable this setting, set to 'Pick a Day...' option.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.late_fee_day.html_name }}" class="form-control"
+                                       value="{{ form.late_fee_day.value }}"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="{{ form.late_fee_charge.id_for_label }}">Late Fee Charge</label>
+                                <p>Late Fee charge percentage.</p>
+                            </td>
+                            <td><input type="number" name="{{ form.late_fee_charge.html_name }}" class="form-control"
+                                       value="{{ form.late_fee_charge.value }}"/></td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="clearfix"></div>
 {% endblock %}

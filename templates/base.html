@@ -9,19 +9,21 @@
 
     <link rel="stylesheet" href="{% static '@fortawesome/fontawesome-free/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
     <link rel="stylesheet" href="{% static 'admin-lte/dist/css/adminlte.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
     {% block stylesheets %}{% endblock %}
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="{% block body-class %}{% endblock %}">
+<body class="{% block body-class %}hold-transition layout-top-nav layout-footer-not-fixed{% endblock %}">
 
     {% block body %}{% endblock %}
 
 <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'admin-lte/dist/js/adminlte.js' %}"></script>
+<script src="{% static 'sweetalert2/dist/sweetalert2.min.js' %}"></script>
+<script src="{% static 'admin-lte/dist/js/adminlte.min.js' %}"></script>
 
 {% block javascripts %}{% endblock %}
 

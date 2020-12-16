@@ -11,7 +11,7 @@ import os
 
 
 @db_task()
-def get_director_details(user, characters, tenant_pk):
+def get_director_details(user, characters):
     character_info = {}
     corporations = []
 

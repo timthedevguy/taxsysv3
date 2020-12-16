@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block body-class %}hold-transition layout-top-nav" data-panel-auto-height="false{% endblock %}
-
 {% block body %}
 
     <div class="wrapper">
@@ -22,7 +20,7 @@
         </header>
 
         <!-- Full Width Column -->
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="height: auto;">
             <div class="container" style="padding-top:20px;">
 
                 {% block content %}{% endblock %}
@@ -31,30 +29,20 @@
             <!-- /.container -->
         </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="d-flex justify-content-between full-width">
-                        <strong>Copyright &copy; 2017-2020 <a href="http://binarymethod.com" data-toggle="tooltip"
-                                                              title="ISK Donations accepted, but not required">Fecal
-                            Matters</a>.</strong>
-                        <div class="float-right d-none d-sm-inline">
-                            Version 3
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!--<footer class="main-footer">
-            <div class="container">
-                <div class="pull-right hidden-xs">
-                    <b>Version</b> VERSION
-                </div>
-                <strong>Copyright &copy; 2017-2020 <a href="http://binarymethod.com" data-toggle="tooltip"
-                                                      title="ISK Donations accepted, but not required">Fecal Matters</a>.</strong>
-            </div>
-
-        </footer>-->
+{#        <footer class="main-footer">#}
+{#            <div class="container">#}
+{#                <div class="row">#}
+{#                    <div class="d-flex justify-content-between full-width">#}
+{#                        <strong>Copyright &copy; 2017-2020 <a href="http://binarymethod.com" data-toggle="tooltip"#}
+{#                                                              title="ISK Donations accepted, but not required">Fecal#}
+{#                            Matters</a>.</strong>#}
+{#                        <div class="float-right d-none d-sm-inline">#}
+{#                            Version 3#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </footer>#}
     </div>
 
 {% endblock %}
@@ -63,9 +51,32 @@
 
     <script type="text/javascript">
 
-        $(document).ready(() => {
-            console.log("here");
+        const capitalize = (s) => {
+            if (typeof s !== 'string') return ''
+            return s.charAt(0).toUpperCase() + s.slice(1)
+        }
 
+        $(document).ready(() => {
+
+            let Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+
+            let messages = [];
+
+            {% if messages %}
+                {% for message in messages %}
+                    Toast.fire({
+                        title: capitalize('{{ message.tags }}'),
+                        text: '{{ message }}',
+                        icon: '{{ message.tags }}'
+                    });
+                {% endfor %}
+            {% endif %}
         })
 
     </script>

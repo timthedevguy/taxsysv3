@@ -1,7 +1,7 @@
 import json
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, UpdateView
 from .forms import SettingForm
 from django.contrib.auth.models import Group
 from django.conf import settings
@@ -15,7 +15,9 @@ from secrets import token_urlsafe
 from .mixins import TenantPermissionRequireMixin, TenantContextMixin
 from ..eveonline import esi
 import re
-from .models import Corporation, Tenant
+from .models import Corporation, Tenant, Setting
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 # Create your views here.
@@ -40,7 +42,7 @@ class IndexView(TemplateView):
                         if m.group(1) not in tenants:
                             tenants.append(m.group(1))
 
-        tenants = Tenant.objects.filter(identifier__in=tenants)
+        tenants = Tenant.objects.filter(pk__in=tenants)
 
         for tenant in tenants:
             if len(tenant.corporations()) == 0:
@@ -83,7 +85,7 @@ class DirectorSuccess(TemplateView):
 
         # Get tenant
         try:
-            tenant = Tenant.objects.get(identifier=context['tenant_id'])
+            tenant = Tenant.objects.get(pk=context['tenant_id'])
         except ObjectDoesNotExist:
             raise Http404('Tenant not found')
 
@@ -99,6 +101,9 @@ class DirectorSuccess(TemplateView):
             # TODO Handle Exception
             pass
 
+        # Generate Default settings for the tenant
+        tenant_settings = Setting.objects.create(tenant=tenant)
+
         # Generate new token to invalidate the link
         tenant.token = token_urlsafe()
         tenant.save()
@@ -109,7 +114,7 @@ class DirectorSuccess(TemplateView):
         context['tenant'] = tenant
 
         # Queue up the Huey Task to retrieve Character/Corporation Information
-        get_director_details(user=self.request.user, characters=characters['characters'], tenant_pk=tenant.id)
+        get_director_details(user=self.request.user, characters=characters['characters'])
 
         return context
 
@@ -128,15 +133,14 @@ def ajax_test(request, tenant_id):
     return JsonResponse({'message': 'Call Finished'}, safe=False)
 
 
-class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, FormView):
+class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, SuccessMessageMixin, UpdateView):
     permission_required = 'admin'
     template_name = 'tenant_admin_index.html'
     form_class = SettingForm
+    success_message = 'Settings updated!'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        #context['tenant'] = Tenant.objects.get(identifier=self.kwargs['tenant_id'])
-        return context
+    def get_object(self, queryset=None):
+        return Setting.objects.get(tenant_id=self.kwargs['tenant_id'])
 
 
 class TenantIndex(TenantContextMixin, TemplateView):

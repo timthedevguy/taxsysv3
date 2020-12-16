@@ -32,11 +32,11 @@
     width: 100%;
 }
 
-.content-wrapper {
-    margin-top: -58px;
-    padding-top: 58px;
-}
-
+/*.content-wrapper
+{
+	margin-top: -58px;
+	padding-top: 58px;
+}*/
 a.nav-link i {
     margin-top: 4px;
 }
@@ -56,4 +56,24 @@ a.nav-link i {
 
 .full-width {
     width: 100%;
+}
+
+/*Admin Pages*/
+table#tenant-settings-table td {
+    background-color: #FBFBFB;
+}
+
+table#tenant-settings-table td:first-child {
+    padding-left: 40px;
+}
+
+table#tenant-settings-table td:last-child {
+    width: 40%;
+}
+
+table#tenant-settings-table td.table-title {
+    padding-left: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: white;
 }

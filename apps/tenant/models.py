@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from apps.testauth.models import TestUser
 import uuid
 import secrets
@@ -6,6 +7,7 @@ import secrets
 
 # Create your models here.
 class Tenant(models.Model):
+    id = models.CharField(max_length=255, default=uuid.uuid4, primary_key=True)
     name = models.CharField(null=False, max_length=255)
     identifier = models.CharField(null=False, max_length=255, default=uuid.uuid4)
     token = models.CharField(null=False, max_length=100, default=secrets.token_urlsafe)
@@ -45,7 +47,7 @@ class Character(models.Model):
 
 class Setting(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=False)
-    start_date = models.DateField(null=True)
+    start_date = models.DateField(null=True, blank=True)
     mineral_tax_rate = models.IntegerField(null=False, default=5)
     goo_tax_rate = models.IntegerField(null=False, default=5)
     source = models.IntegerField(null=False, default=60003760)
@@ -62,3 +64,6 @@ class Setting(models.Model):
 
     def __str__(self):
         return f'Settings for {self.tenant.name}'
+
+    def get_absolute_url(self):
+        return reverse('tenant_admin', kwargs={'tenant_id': self.tenant_id})

@@ -5,4 +5,4 @@ from .models import Setting
 class SettingForm(ModelForm):
     class Meta:
         model = Setting
-        fields = '__all__'
+        exclude = ['tenant']

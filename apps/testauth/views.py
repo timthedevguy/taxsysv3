@@ -110,7 +110,7 @@ class DirectorOIDCAuthenticationCallbackView(View):
             # Get the tenant by the token
             try:
                 tenant = Tenant.objects.get(token=token)
-                return HttpResponseRedirect(f'/{tenant.identifier}/director/success/?token={tenant.token}')
+                return HttpResponseRedirect(f'/{tenant.id}/director/success/?token={tenant.token}')
             except ObjectDoesNotExist:
                 # If the token is no longer valid
                 raise Http404('Tenant not found')

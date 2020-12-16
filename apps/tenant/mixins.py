@@ -35,7 +35,7 @@ class TenantContextMixin:
             tenant_id = context['view'].kwargs['tenant_id']
             if 'tenant_id' not in context:
                 context['tenant_id'] = tenant_id
-            context['tenant'] = Tenant.objects.get(identifier=tenant_id)
+            context['tenant'] = Tenant.objects.get(pk=tenant_id)
         else:
             raise Exception
 
