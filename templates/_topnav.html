@@ -12,6 +12,9 @@
         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
+                <li>
+
+                </li>
                 {% if tenant_id %}
                     <li class="nav-item">
                         <a href="{% url 'tenant_index' tenant_id %}" class="nav-link"><i class="fas fa-home"></i> {{ tenant.name }}</a>
@@ -22,6 +25,7 @@
                 </li>
                 {% if tenant_id %}
                     {% get_tenant_perm request.user tenant_id as user_level %}
+
                     {% if user_level > 0 %}
                     <li class="nav-item dropdown">
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -29,17 +33,21 @@
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
                             style="left: 0px; right: inherit;">
                             {% if user_level >= 1 %}
-                                <li><a href="{% url 'tenant_admin_evaders' tenant_id %}" class="dropdown-item"><i class="fas fa-user-ninja"></i> Tax Evaders</a></li>
+                                <li><a href="{% url 'tenant_admin_evaders' tenant_id %}" class="dropdown-item"><i class="fas fa-fw fa-user-ninja"></i> Tax Evaders</a></li>
                             {% endif %}
                             {% if user_level >= 2 %}
-                                <li><a href="{% url 'tenant_admin_ledger' tenant_id %}" class="dropdown-item"><i class="fas fa-table"></i> Master Ledger</a></li>
-                                <li class=""><a href="{% url 'tenant_admin_users' tenant_id %}" class="dropdown-item"><i class="fas fa-users"></i> Users</a></li>
+                                <li><a href="{% url 'tenant_admin_ledger' tenant_id %}" class="dropdown-item"><i class="fas fa-fw fa-table"></i> Master Ledger</a></li>
+                                <li class=""><a href="{% url 'tenant_admin_users' tenant_id %}" class="dropdown-item"><i class="fas fa-fw fa-users"></i> Users</a></li>
                             {% endif %}
-                            {% if user_level == 3 %}
+                            {% if user_level >= 3 %}
                                 <li class="dropdown-divider"></li>
-                                <li class=""><a href="{% url 'tenant_admin' tenant_id %}" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
-                                <li class=""><a href="{% url 'tenant_admin_corporations' tenant_id %}" class="dropdown-item"><i class="fas fa-building"></i> Corporations</a></li>
-                                <li class=""><a href="{% url 'tenant_admin_overrides' tenant_id %}" class="dropdown-item"><i class="fas fa-dumpster-fire"></i> Tax Rate Overrides</a></li>
+                                <li class=""><a href="{% url 'tenant_admin' tenant_id %}" class="dropdown-item"><i class="fas fa-fw fa-cog"></i> Settings</a></li>
+                                <li class=""><a href="{% url 'tenant_admin_corporations' tenant_id %}" class="dropdown-item"><i class="fas fa-fw fa-building"></i> Corporations</a></li>
+                                <li class=""><a href="{% url 'tenant_admin_overrides' tenant_id %}" class="dropdown-item"><i class="fas fa-fw fa-dumpster-fire"></i> Tax Rate Overrides</a></li>
+                            {% endif %}
+                            {% if user_level > 3 %}
+                                <li class="dropdown-divider"></li>
+                                <li class=""><a href="{% url 'tenant_admin_directors' tenant_id %}" class="dropdown-item"><i class="fas fa-fw fa-user-circle"></i> Directors</a></li>
                             {% endif %}
                         </ul>
                     </li>
@@ -47,16 +55,15 @@
                 {% endif %}
             </ul>
 
-            <!-- Right navbar links -->
+            <!-- Right navbar links
             <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
                 <li class="nav-item">
                     <a href="#" class="nav-link"><i class="fas fa-cogs"></i></a>
                 </li>
-                <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
-                        <!--<span class="badge badge-warning navbar-badge">15</span>-->
+                        <span class="badge badge-warning navbar-badge">15</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-header">15 Notifications</span>
@@ -79,7 +86,7 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
-            </ul>
+            </ul>-->
         </div>
     </div>
 </nav>

@@ -10,7 +10,7 @@ class TestUser(AbstractUser):
     subject = models.CharField(max_length=255, null=True)
     display_name = models.CharField(max_length=200)
     is_sync = models.BooleanField(default=False)
-    last_alt_check = models.DateField(null=True)
+    last_alt_check = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.display_name

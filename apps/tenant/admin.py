@@ -64,6 +64,9 @@ class TenantAdmin(admin.ModelAdmin):
     def create_perms(self, obj):
         # Adding new Tenant, create Permission Objects
         content_type = ContentType.objects.get(app_label='tenant', model='tenant')
+        permission_ceo = Permission.objects.create(codename=f'tenant_{obj.id}_ceo',
+                                                   name=f'{obj.name} CEO',
+                                                   content_type=content_type)
         permission_admin = Permission.objects.create(codename=f'tenant_{obj.id}_admin',
                                                      name=f'{obj.name} Admin',
                                                      content_type=content_type)
@@ -90,6 +93,9 @@ class TenantAdmin(admin.ModelAdmin):
 
         old = Tenant.objects.get(pk=obj.id)
 
+        perm = Permission.objects.get(codename=f'tenant_{obj.id}_ceo')
+        perm.name = f'{obj.name} CEO'
+        perm.save()
         perm = Permission.objects.get(codename=f'tenant_{obj.id}_admin')
         perm.name = f'{obj.name} Admin'
         perm.save()
@@ -116,6 +122,7 @@ class TenantAdmin(admin.ModelAdmin):
         Group.objects.get(name=f'{obj.name} Administrators').delete()
 
         # Delete Perms
+        Permission.objects.get(codename=f'tenant_{obj.id}_ceo').delete()
         Permission.objects.get(codename=f'tenant_{obj.id}_admin').delete()
         Permission.objects.get(codename=f'tenant_{obj.id}_accountant').delete()
         Permission.objects.get(codename=f'tenant_{obj.id}_auditor').delete()

@@ -18,5 +18,6 @@ urlpatterns = [
     path('admin/evaders/', views.TenantAdminEvaders.as_view(), name='tenant_admin_evaders'),
     path('admin/ledger/', views.TenantAdminLedger.as_view(), name='tenant_admin_ledger'),
     path('admin/users/', views.TenantAdminUsers.as_view(), name='tenant_admin_users'),
+    path('admin/directors/', views.TenantAdminDirectors.as_view(), name='tenant_admin_directors'),
     path('ajax/director/count/', ajax.ajax_get_director_char_count, name='ajax_director_get_count')
 ]

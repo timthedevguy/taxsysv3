@@ -70,7 +70,7 @@
                 {% for message in messages %}
                     Toast.fire({
                         title: capitalize('{{ message.tags }}'),
-                        text: '{{ message }}',
+                        text: '{{ message|safe }}',
                         icon: '{{ message.tags }}'
                     });
                 {% endfor %}
@@ -78,5 +78,7 @@
         })
 
     </script>
+
+    {% block additional_javascript %}{% endblock %}
 
 {% endblock %}

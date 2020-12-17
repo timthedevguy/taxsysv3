@@ -40,23 +40,50 @@
                 </div>
                 {#                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>#}
             </div>
+
+            {% if tenants %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Tenants</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-8 col-lg-9">
+                                <select class="form-control" id="select-tenant">
+                                    <option value="">Select a Tenant...</option>
+                                    {% for item in tenants %}
+                                        <option value="{{ item.pk }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-lg-3">
+                                <button id="tenant-select-button" class="btn btn-block btn-primary" disabled>Go</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
             {% if missing %}
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title text-danger"><i class="fas fa-exclamation-triangle"></i> Tenants not Configured</h3>
+                        <h3 class="card-title text-danger"><i class="fas fa-exclamation-triangle"></i> Tenants not
+                            Configured</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <p>You are an Administrator on the following Tenants and have not configured any Corporations for either Taxing or Payments.  Please
-                         use the provided links to access the Administrator page and configure the Tenant.</p>
+                        <p>You are an Administrator on the following Tenants and have not configured any Corporations
+                            for either Taxing or Payments. Please
+                            use the provided links to access the Administrator page and configure the Tenant.</p>
                         <table class="table">
                             <tbody>
-                                {% for tenant in missing %}
-                                    <tr>
-                                        <td>{{ tenant.name }}</td>
-                                        <td><a href="{% url 'tenant_admin' tenant.id %}" class="btn btn-block btn-xs btn-success">Configure</a></td>
-                                    </tr>
-                                {% endfor %}
+                            {% for tenant in missing %}
+                                <tr>
+                                    <td>{{ tenant.name }}</td>
+                                    <td><a href="{% url 'tenant_admin' tenant.id %}"
+                                           class="btn btn-block btn-xs btn-success">Configure</a></td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -65,4 +92,27 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block additional_javascript %}
+
+    <script type="text/javascript">
+        $(document).ready(() => {
+
+            $('#select-tenant').change((e) => {
+                if($('#select-tenant').val() != "") {
+                    $('#tenant-select-button').prop('disabled', false);
+                } else {
+                    $('#tenant-select-button').prop('disabled', true);
+                }
+            });
+
+            $('#tenant-select-button').click((e) => {
+                let url = '{{ request.scheme }}://{{ request.get_host }}{% url 'dashboard' %}' + $('#select-tenant').val() + '/';
+                window.location = url;
+            });
+        });
+    </script>
+
+
 {% endblock %}

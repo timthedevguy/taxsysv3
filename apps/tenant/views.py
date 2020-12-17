@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, UpdateView
 from .forms import SettingForm
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.conf import settings
 from django.http import JsonResponse, Http404
 from .models import Tenant
@@ -51,6 +51,9 @@ class IndexView(TemplateView):
         if len(missing) > 0:
             context['missing'] = missing
 
+        if self.request.user.is_superuser:
+            context['tenants'] = Tenant.objects.all()
+
         return context
 
     def get(self, request, *args, **kwargs):
@@ -93,10 +96,15 @@ class DirectorSuccess(TemplateView):
         if tenant.token != self.request.GET['token']:
             raise PermissionDenied
 
-        # Set User as Admin for their Tenant
+        # Setup Permissions
         try:
+            # Add user to Administrators Group for the Tenant
             admin_group = Group.objects.get(name=f'{tenant.name} Administrators')
             admin_group.user_set.add(self.request.user)
+
+            # Give them the CEO Permission
+            ceo_perm = Permission.objects.get(codename=f'tenant_{tenant.id}_ceo')
+            self.request.user.user_permissions.add(ceo_perm)
         except ObjectDoesNotExist:
             # TODO Handle Exception
             pass
@@ -170,3 +178,8 @@ class TenantAdminLedger(TenantPermissionRequireMixin, TenantContextMixin, Templa
 class TenantAdminUsers(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
     permission_required = 'accountant'
     template_name = 'tenant_admin_users.html'
+
+
+class TenantAdminDirectors(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
+    permission_required = 'ceo'
+    template_name = 'tenant_admin_director.html'

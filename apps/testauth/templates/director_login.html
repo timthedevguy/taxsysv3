@@ -13,7 +13,7 @@
             <h1>{{ tenant.name }}</h1>
         </div>
 
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-body login-card-body">
                 <strong>Information</strong>
                 <p>This is the login area for CEO's to setup TaxSYS access to their Corporation Membership and Journal.</p>
@@ -22,7 +22,7 @@
                 <p>Login using the provided link below, follow the instructions to complete setup.  <b>This link expires after use.</b></p>
             </div>
         </div>
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-body login-card-body">
                 <div class="text-center">
                     <a href="{% url 'director_oidc_authentication_init' token=tenant.token %}"><img
