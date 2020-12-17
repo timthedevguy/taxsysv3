@@ -133,6 +133,10 @@ def ajax_test(request, tenant_id):
     return JsonResponse({'message': 'Call Finished'}, safe=False)
 
 
+class TenantIndex(TenantContextMixin, TemplateView):
+    template_name = 'tenant_index.html'
+
+
 class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, SuccessMessageMixin, UpdateView):
     permission_required = 'admin'
     template_name = 'tenant_admin_index.html'
@@ -143,9 +147,26 @@ class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, Success
         return Setting.objects.get(tenant_id=self.kwargs['tenant_id'])
 
 
-class TenantIndex(TenantContextMixin, TemplateView):
-    template_name = 'tenant_index.html'
+class TenantAdminCorporations(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
+    permission_required = 'admin'
+    template_name = 'tenant_admin_corporations.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
+
+class TenantAdminOverrides(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
+    permission_required = 'admin'
+    template_name = 'tenant_admin_overrides.html'
+
+
+class TenantAdminEvaders(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
+    permission_required = 'auditor'
+    template_name = 'tenant_admin_evaders.html'
+
+
+class TenantAdminLedger(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
+    permission_required = 'accountant'
+    template_name = 'tenant_admin_ledger.html'
+
+
+class TenantAdminUsers(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
+    permission_required = 'accountant'
+    template_name = 'tenant_admin_users.html'
