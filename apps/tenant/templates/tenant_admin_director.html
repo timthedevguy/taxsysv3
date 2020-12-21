@@ -1,7 +1,65 @@
 {% extends 'internal.html' %}
 {% load static %}
+{% load tenant_tags %}
 
 {% block title %}Directors{% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-info card-outline">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-link"></i> Director Login Link</h3>
+                </div>
+                <div class="card-body">
+                    <p>The following link should be used to add more Director (CEO) level accounts to this TaxSYS
+                        instance. Adding
+                        additional CEO's will allow their Corporations to be selected for Taxing or Payments. The link
+                        expires
+                        once used, a new link will be automatically generated.</p>
+                    <div class="attachment-block">
+                        <code>{{ request.scheme }}://{{ request.get_host }}{% url 'director_login' tenant.token %}</code>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <div class="alert alert-danger">
+                                <h5><i class="icon fas fa-ban"></i> Danger</h5>
+                                <p>Anyone that uses this link will become a Director (Global Admin) on your TaxSYS
+                                    instance. Do NOT give to normal players.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline card-success">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-fw fa-user-circle"></i> Directors</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Auth Account</th>
+                                <th>Corporation</th>
+                                <th>Character</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for director in directors %}
+                                <tr>
+                                    <td>{{ director.auth_account }}</td>
+                                    <td>{{ director.corporation }}</td>
+                                    <td>{{ director.character }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

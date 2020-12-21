@@ -1,9 +1,36 @@
 {% extends 'internal.html' %}
 {% load static %}
+{% load tenant_tags %}
 
 {% block title %}Settings{% endblock %}
 
 {% block content %}
+
+    {% get_wizard_enabled as has_wizard %}
+    {% if has_wizard == True %}
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-hat-wizard"></i> Step 1 - Settings</h3>
+                        <div class="card-tools">
+                            <span title="3 New Messages" class="badge bg-primary">Setup Wizard</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>Welcome to TaxSYS.  The first step to setting up TaxSYS is configuring the Tax and Value
+                         options.</p>
+                        <p>Don't worry if you haven't figured out the Start Date yet, you can configure this later when
+                        you are ready to start taxing your miners.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'tenant_admin_overrides' tenant_id %}" class="btn btn-success float-right">Setup Overrides <i class="fas fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-md-12">
             <form method="post">

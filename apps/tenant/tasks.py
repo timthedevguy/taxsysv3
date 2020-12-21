@@ -1,7 +1,6 @@
 from huey.contrib.djhuey import task, db_task
 from ..testesi import testesi_client
-from ..eveonline import esi
-from ..eveonline import esi
+from ..eveonline_esi import eveesi_client
 from ..tenant.models import Corporation, Character
 from datetime import datetime
 from time import sleep
@@ -26,7 +25,7 @@ def get_director_details(user, characters):
         # Check if Corporation is in DB
         if not Corporation.objects.filter(corporation_id=corporation).exists():
             # Get ESI info
-            corporation_info = esi.get_corporation(corporation)['data']
+            corporation_info = eveesi_client.get_corporation(corporation)['data']
             corp = Corporation(name=corporation_info['name'])
             corp.corporation_id = corporation
             corp.ceo_id = corporation_info['ceo_id']
@@ -40,7 +39,7 @@ def get_director_details(user, characters):
             char.corporation = Corporation.objects.get(corporation_id=character_info[character_id]['corporation_id'])
 
             # Get Corp History
-            history = esi.get_character_corporation_history(character_id)['data']
+            history = eveesi_client.get_character_corporation_history(character_id)['data']
             if history[0]['corporation_id'] == character_info[character_id]['corporation_id']:
                 # Current is correct
                 char.join_date = datetime.strptime(history[0]['start_date'], '%Y-%m-%dT%H:%M:%SZ')

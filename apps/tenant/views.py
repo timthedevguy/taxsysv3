@@ -8,16 +8,17 @@ from django.conf import settings
 from django.http import JsonResponse, Http404
 from .models import Tenant
 from apps.testesi import testesi_client
+from apps.testauth.models import TestUser
 from .tasks import get_director_details
 from huey.contrib import djhuey
 import logging
 from secrets import token_urlsafe
 from .mixins import TenantPermissionRequireMixin, TenantContextMixin
-from ..eveonline import esi
 import re
-from .models import Corporation, Tenant, Setting
+from .models import Corporation, Tenant, Setting, Character
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 
 
 # Create your views here.
@@ -35,7 +36,7 @@ class IndexView(TemplateView):
         for user_perm in user_perms:
             if 'tenant.tenant_' in user_perm:
                 m = re.search(
-                    '^tenant\.tenant_(?P<tenant_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})_admin$',
+                    '^tenant\.tenant_(?P<tenant_id>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})_ceo$',
                     user_perm)
                 if m is not None:
                     if len(m.groups()) == 1:
@@ -144,6 +145,15 @@ def ajax_test(request, tenant_id):
 class TenantIndex(TenantContextMixin, TemplateView):
     template_name = 'tenant_index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if 'wizard' in self.request.GET:
+            if self.request.GET['wizard'] == 'False':
+                self.request.session.pop('wizard')
+
+        return context
+
 
 class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, SuccessMessageMixin, UpdateView):
     permission_required = 'admin'
@@ -153,6 +163,17 @@ class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, Success
 
     def get_object(self, queryset=None):
         return Setting.objects.get(tenant_id=self.kwargs['tenant_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if 'wizard' in self.request.GET:
+            if self.request.GET['wizard'] == 'True':
+                self.request.session['wizard'] = True
+            else:
+                self.request.session.pop('wizard')
+
+        return context
 
 
 class TenantAdminCorporations(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
@@ -183,3 +204,25 @@ class TenantAdminUsers(TenantPermissionRequireMixin, TenantContextMixin, Templat
 class TenantAdminDirectors(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
     permission_required = 'ceo'
     template_name = 'tenant_admin_director.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        directors = []
+        tenant_id = context['tenant_id']
+        ceo_perm = Permission.objects.filter(codename=f'tenant_{tenant_id}_ceo')[0]
+        ceo_users = TestUser.objects.filter(Q(user_permissions=ceo_perm)).distinct()
+
+        for ceo_user in ceo_users:
+            characters = Character.objects.filter(user=ceo_user)
+            for character in characters:
+                if character.corporation.ceo_id == character.character_id:
+                    directors.append({
+                        'auth_account': ceo_user.display_name,
+                        'corporation': character.corporation.name,
+                        'character': character.name
+                    })
+
+        context['directors'] = directors
+
+        return context

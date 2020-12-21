@@ -72,15 +72,15 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <p>You are an Administrator on the following Tenants and have not configured any Corporations
+                        <p>You are a Director on the following Tenants and have not configured any Corporations
                             for either Taxing or Payments. Please
-                            use the provided links to access the Administrator page and configure the Tenant.</p>
+                            use the provided links to access the Setup Wizard to configure the Tenant.</p>
                         <table class="table">
                             <tbody>
                             {% for tenant in missing %}
                                 <tr>
                                     <td>{{ tenant.name }}</td>
-                                    <td><a href="{% url 'tenant_admin' tenant.id %}"
+                                    <td><a href="{% url 'tenant_admin' tenant.id %}?wizard=True"
                                            class="btn btn-block btn-xs btn-success">Configure</a></td>
                                 </tr>
                             {% endfor %}
@@ -96,6 +96,7 @@
 
 {% block additional_javascript %}
 
+    {% if tenants %}
     <script type="text/javascript">
         $(document).ready(() => {
 
@@ -113,6 +114,7 @@
             });
         });
     </script>
+    {% endif %}
 
 
 {% endblock %}

@@ -3,6 +3,9 @@ import sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+# Install Package from GitHub
+# pipenv install -e git+https://github.com/some_user/some_package.git#egg=some_package
+# pipenv install -e git+https://github.com/binarygod/bg_eveonline_sde.git#egg=bg_eveonline_sde
 
 sentry_sdk.init(
     dsn="https://c973798b071c457c937ab6e646ff1cfc@sentry.io/1761193",
@@ -27,9 +30,13 @@ INSTALLED_APPS = [
     'huey.contrib.djhuey',
     'apps.testesi',
     'apps.testauth',
-    'apps.landlord',
     'apps.tenant',
-    'apps.eveonline',
+    'apps.eveonline_esi',
+    'apps.eveonline_sde',
+    'apps.eveonline_sde.invTypes',
+    'apps.eveonline_sde.dgmTypeAttributes',
+    'apps.eveonline_sde.invTypeMaterials',
+    'apps.eveonline_market'
 ]
 
 MIDDLEWARE = [

@@ -1,7 +1,36 @@
 {% extends 'internal.html' %}
 {% load static %}
+{% load tenant_tags %}
 
 {% block title %}Corporations{% endblock %}
 
 {% block content %}
+    {% get_wizard_enabled as has_wizard %}
+    {% if has_wizard == True %}
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-hat-wizard"></i> Step 3 - Setup Corporations</h3>
+                        <div class="card-tools">
+                            <span title="3 New Messages" class="badge bg-primary">Setup Wizard</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>In order for TaxSYS to properly Tax miners and record payments it needs to know which Corporations
+                        to Tax, and which Corporations to receive payments from.</p>
+                        <p>Only Corporations that you or another Director are CEO of will show in this list.  If you are
+                        missing a Corporation you need to have the CEO of that Corporation to log in with this link.</p>
+                        <p><code>{{ request.scheme }}://{{ request.get_host }}{% url 'director_login' tenant.token %}</code></p>
+                        <p><strong>Warning</strong>: This URL only works once and any TEST Auth account that uses it setup with Director
+                        roles in TaxSYS.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'tenant_admin_overrides' tenant_id %}" class="btn btn-light"><i class="fas fa-angle-left"></i> Step 2 - Setup Overrides</a>
+                        <a href="{% url 'tenant_index' tenant_id %}?wizard=False" class="btn btn-success float-right">Finish and Exit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

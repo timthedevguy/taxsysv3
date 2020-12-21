@@ -16,3 +16,12 @@ def get_tenant_perm(user: TestUser, tenant_id):
         return 1
 
     return 0
+
+
+@register.simple_tag(takes_context=True)
+def get_wizard_enabled(context):
+    request = context['request']
+    if 'wizard' in request.session:
+        return True
+
+    return False
