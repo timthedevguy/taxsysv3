@@ -18,7 +18,6 @@ huey = "*"
 redis = "*"
 pandas = "*"
 numpy = "*"
-bg-eveonline-sde = {editable = true,git = "https://github.com/binarygod/bg_eveonline_sde.git"}
 
 [requires]
 python_version = "3.7"
