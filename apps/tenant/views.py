@@ -164,6 +164,11 @@ class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, Success
     def get_object(self, queryset=None):
         return Setting.objects.get(tenant_id=self.kwargs['tenant_id'])
 
+
+class TenantAdminCorporations(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
+    permission_required = 'admin'
+    template_name = 'tenant_admin_corporations.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -174,11 +179,6 @@ class TenantAdminIndex(TenantPermissionRequireMixin, TenantContextMixin, Success
                 self.request.session.pop('wizard')
 
         return context
-
-
-class TenantAdminCorporations(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):
-    permission_required = 'admin'
-    template_name = 'tenant_admin_corporations.html'
 
 
 class TenantAdminOverrides(TenantPermissionRequireMixin, TenantContextMixin, TemplateView):

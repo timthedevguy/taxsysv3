@@ -80,7 +80,7 @@
                             {% for tenant in missing %}
                                 <tr>
                                     <td>{{ tenant.name }}</td>
-                                    <td><a href="{% url 'tenant_admin' tenant.id %}?wizard=True"
+                                    <td><a href="{% url 'tenant_admin_corporations' tenant.id %}?wizard=True"
                                            class="btn btn-block btn-xs btn-success">Configure</a></td>
                                 </tr>
                             {% endfor %}

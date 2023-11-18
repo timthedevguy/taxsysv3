@@ -11,7 +11,7 @@
             <div class="col-md-8 offset-md-2">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-hat-wizard"></i> Step 2 - Setup Overrides</h3>
+                        <h3 class="card-title"><i class="fas fa-hat-wizard"></i> Step 3 - Setup Overrides</h3>
                         <div class="card-tools">
                             <span title="3 New Messages" class="badge bg-primary">Setup Wizard</span>
                         </div>
@@ -21,8 +21,8 @@
                         to encourage mining of a specific ore or mineral.</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url 'tenant_admin' tenant_id %}" class="btn btn-light"><i class="fas fa-angle-left"></i> Step 1 - Settings</a>
-                        <a href="{% url 'tenant_admin_corporations' tenant_id %}" class="btn btn-success float-right">Setup Corporations <i class="fas fa-angle-right"></i></a>
+                        <a href="{% url 'tenant_admin' tenant_id %}" class="btn btn-light"><i class="fas fa-angle-left"></i> Step 2 - Setup Settings</a>
+                        <a href="{% url 'tenant_index' tenant_id %}?wizard=False" class="btn btn-success float-right">Finish and Exit</a>
                     </div>
                 </div>
             </div>

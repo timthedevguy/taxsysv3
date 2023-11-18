@@ -14,6 +14,7 @@ class Command(BaseCommand):
         parser.add_argument('type_id', type=int)
 
     def handle(self, *args, **options):
+        # Lines 18->25 are actual code to pull the market prices
         self.stdout.write(self.style.NOTICE('Pulling data for {}'.format(options['type_id'])))
         raw = eveesi_client.get_markets_region_orders(settings.MARKET_REGION, order_type='sell', type_id=options['type_id'],
                                             all=True)['data']
@@ -22,6 +23,12 @@ class Command(BaseCommand):
             print(market.pandas_stats(jita))
         else:
             print('Data returned is empty!')
+
+        # Code below this line is just testing cause I was lazy and didn't create a test command for it :(
+
+        # This is the SQL that will get information about the type
+        # typeID in the SQL was hardcoded for testing, really should be a
+        # SQL param
         with connection.cursor() as cursor:
             query = 'SELECT "invTypes"."typeID",' \
                     '       "invTypes"."typeName",' \
@@ -49,6 +56,8 @@ class Command(BaseCommand):
             rows = dictfetchall(cursor)
             details = rows[0]
 
+            # This statement gets all the mats for the TypeID as well as pricing data
+            # if you use this as pricing source, will need to modify for Janice
             query = 'SELECT "invTypeMaterials"."materialTypeID",' \
                     '       "invTypeMaterials".quantity,' \
                     '       iT."typeName",' \
@@ -74,6 +83,8 @@ class Command(BaseCommand):
 
             details['materials'] = rows
 
+        # Combined info about the type, can use the details here to make
+        # final valuation calculation
         print(details)
 
 
